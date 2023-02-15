@@ -1,0 +1,31 @@
+{
+  "name": "dash",
+  "description": "An open source Bootstrap 4 admin theme.",
+  "main": "",
+  "authors": [
+    "David Miller (https://davidmiller.io/)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "css",
+    "sass",
+    "html",
+    "responsive",
+    "theme",
+    "template",
+    "admin",
+    "app"
+  ],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "chartist-plugin-pointlabels": "^0.0.6"
+  }
+}
