@@ -15,11 +15,4 @@ $strMethodName = $uri[2] . 'Action';
 $objFeedController->{$strMethodName}();
 ?>
 
-<!DOCTYPE html>
-<html>
-   <head>
-      <meta http-equiv = "refresh" content = "0; url = https://museumrestapi.000webhostapp.com/dash/index.php" />
-   </head>
-   <body>
-   </body>
-</html>
+    
