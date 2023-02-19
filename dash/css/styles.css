@@ -6,6 +6,12 @@
 	stroke: rebeccapurple;
 }*/
 
+.ct-series-b .ct-line,
+.ct-series-b .ct-point,
+.ct-series-b .ct-bar {
+	stroke: blue;
+}
+
 .chartist-tooltip {
 	position: absolute;
 	display: inline-block;
@@ -150,8 +156,8 @@
 }
 
 .ct-legend .ct-series-1:before {
-	background-color: #f05b4f;
-	border-color: #f05b4f;
+	background-color: blue;
+	border-color: blue;
 }
 
 .ct-legend .ct-series-2:before {
