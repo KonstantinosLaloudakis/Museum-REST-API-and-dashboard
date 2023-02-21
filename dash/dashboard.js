@@ -174,7 +174,7 @@ function visitPerExhibit() {
 }
 
 function maxAndAvgTimePerExhibit() { 
-	createChart('../php/maxAndAvgTimePerExhibit.php', { query: 8 }, function (json) {
+	createChart('../php/maxAndAvgTimePerExhibit.php', function (json) {
 		data = {
 			labels: json.map(x => x.sensor_id),
 			series: [json.map(x => x.maxTime),

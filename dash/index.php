@@ -2,7 +2,7 @@
 <html lang="en">
 
 <?php
-require 'connect.php';
+require 'php/connect.php';
 ?>
 
 <head>

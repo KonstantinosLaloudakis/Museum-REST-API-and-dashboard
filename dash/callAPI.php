@@ -1,5 +1,5 @@
 <?php
-require 'connect.php';
+require 'php/connect.php';
 // Make the API call
 $url = 'https://sensorslab-nodered.cloud-apps.eu/api/v1/visitors/data/';
 $data = curl_get_contents($url);

@@ -1,5 +1,5 @@
 <?php
-require '../connect.php';
+require 'connect.php';
 $result = $mysqli->query("SELECT AVG(TIMESTAMPDIFF(MINUTE,grouped_data.time_in,grouped_data.time_out)) AS avg_time, 
 	SUM(TIMESTAMPDIFF(MINUTE,grouped_data.time_in,grouped_data.time_out)) AS sum, 
 	MAX(TIMESTAMPDIFF(MINUTE,grouped_data.time_in,grouped_data.time_out)) AS max_time, 
