@@ -9,18 +9,18 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 
-	<title>Revisitability</title>
+	<title>Επισκέψεις ανά μέρα</title>
 
 	<!-- Custom fonts for this template-->
-	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="https://rawgit.com/gionkunz/chartist-js/master/dist/chartist.min.css">
 	<link
 		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
 		rel="stylesheet">
 
 	<!-- Custom styles for this template-->
-	<link href="css/sb-admin-2.min.css" rel="stylesheet">
-	<link href="css/styles.css" rel="stylesheet">
+	<link href="../css/sb-admin-2.min.css" rel="stylesheet">
+	<link href="../css/styles.css" rel="stylesheet">
 
 </head>
 
@@ -33,7 +33,7 @@
 		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
 			<!-- Sidebar - Brand -->
-			<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+			<a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
 				<div class="sidebar-brand-icon rotate-n-15">
 					<i class="fas fa-thin fa-landmark"></i>
 				</div>
@@ -45,7 +45,7 @@
 
 			<!-- Nav Item - Dashboard -->
 			<li class="nav-item">
-				<a class="nav-link" href="index.php">
+				<a class="nav-link" href="../index.php">
 					<i class="fas fa-solid fa-landmark"></i>
 					<span>Αρχική Σελίδα</span></a>
 			</li>
@@ -56,10 +56,10 @@
 			<!-- Heading -->
 			<!-- <div class="sidebar-heading">
 				Interface
-			</div>
- -->
+			</div> -->
+
 			<!-- Nav Item - Pages Collapse Menu -->
-			<!-- <li class="nav-item">
+			<!-- 	<li class="nav-item">
 				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
 					aria-expanded="true" aria-controls="collapseTwo">
 					<i class="fas fa-fw fa-cog"></i>
@@ -72,8 +72,8 @@
 						<a class="collapse-item" href="cards.html">Cards</a>
 					</div>
 				</div>
-			</li> -->
-
+			</li>
+ -->
 			<!-- Nav Item - Utilities Collapse Menu -->
 			<!-- <li class="nav-item">
 				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
@@ -120,8 +120,8 @@
 						<a class="collapse-item" href="blank.html">Blank Page</a>
 					</div>
 				</div>
-			</li> -->
-
+			</li>
+ -->
 			<!-- Nav Item - Charts -->
 			<li class="nav-item">
 				<a class="nav-link" href="visitsPerHour.html">
@@ -136,13 +136,13 @@
 					<span>Επισκέψεις ανά έκθεμα</span></a>
 			</li>
 			<!-- Nav Item - Charts -->
-			<li class="nav-item active">
+			<li class="nav-item">
 				<a class="nav-link" href="revisitability.html">
 					<i class="fas fa-fw fa-chart-area"></i>
 					<span>Revisitability</span></a>
 			</li>
 			<!-- Nav Item - Charts -->
-			<li class="nav-item">
+			<li class="nav-item active">
 				<a class="nav-link" href="visitsPerDay.html">
 					<i class="fas fa-fw fa-chart-area"></i>
 					<span>Επισκέψεις ανά μέρα</span></a>
@@ -284,7 +284,7 @@
 						</li> -->
 
 					<!-- Nav Item - Messages -->
-					<!-- li class="nav-item dropdown no-arrow mx-1">
+					<!-- <li class="nav-item dropdown no-arrow mx-1">
 							<a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
 								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<i class="fas fa-envelope fa-fw"></i> -->
@@ -349,7 +349,7 @@
 						<div class="topbar-divider d-none d-sm-block"></div> -->
 
 					<!-- Nav Item - User Information -->
-					<!-- 						<li class="nav-item dropdown no-arrow">
+					<!-- <li class="nav-item dropdown no-arrow">
 							<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
 								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
@@ -378,8 +378,8 @@
 							</div>
 						</li>
 
-					</ul>-->
-
+					</ul>
+ -->
 				</nav>
 				<!-- End of Topbar -->
 
@@ -387,7 +387,7 @@
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<h1 class="h3 mb-2 text-gray-800">Revisitability</h1>
+					<h1 class="h3 mb-2 text-gray-800">Επισκέψεις ανά μέρα</h1>
 					<!--<p class="mb-4">Chart.js is a third party plugin that is used to generate the charts in this theme.
                         The charts below have been customized - for further customization options, please visit the <a
                             target="_blank" href="https://www.chartjs.org/docs/latest/">official Chart.js
@@ -396,8 +396,7 @@
 					<!-- Content Row -->
 					<div class="row">
 
-
-						<form onsubmit="revisitability(); return false">
+						<form onsubmit="visitsPerDay(); return false">
 							<div class="form-group">
 								<label for="dateFrom">Από</label>
 								<input type="date" class="form-control" id="dateFrom">
@@ -408,7 +407,6 @@
 							</div>
 							<button type="submit" class="btn btn-outline-primary">Υποβολή</button>
 						</form>
-
 						<!--<div class="col-xl-8 col-lg-7">-->
 
 						<!-- Area Chart -->
@@ -464,12 +462,12 @@
                     </div>-->
 
 					</div>
-					<!-- /.container-fluid -->
 					<div class="col-12 mt-5">
-						<div class="ct-chart-line">
-
+						<div class="ct-chart">
 						</div>
 					</div>
+					<!-- /.container-fluid -->
+
 				</div>
 				<!-- End of Main Content -->
 
@@ -495,7 +493,7 @@
 		</a>
 
 		<!-- Logout Modal-->
-		<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		<!-- <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -512,36 +510,33 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 		<!-- Bootstrap core JavaScript-->
-		<script src="vendor/jquery/jquery.min.js"></script>
-		<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<script src="../vendor/jquery/jquery.min.js"></script>
+		<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 		<!-- Core plugin JavaScript-->
-		<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+		<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
 		<!-- Custom scripts for all pages-->
-		<script src="js/sb-admin-2.js"></script>
+		<script src="../js/sb-admin-2.js"></script>
 
 		<!-- Page level plugins -->
-		<!-- <script src="vendor/chart.js/Chart.min.js"></script> -->
+		<!--<script src="vendor/chart.js/Chart.min.js"></script>-->
 
 		<!-- Page level custom scripts -->
-		<!-- <script src="js/demo/chart-area-demo.js"></script>
+		<!--<script src="js/demo/chart-area-demo.js"></script>
 		<script src="js/demo/chart-pie-demo.js"></script>
-		<script src="js/demo/chart-bar-demo.js"></script>
- -->
-
-		<script src="bower_components/chartist/dist/chartist.min.js"></script>
+		<script src="js/demo/chart-bar-demo.js"></script>-->
+		<script src="../bower_components/chartist/dist/chartist.min.js"></script>
 		<script type="text/javascript" src="https://rawgit.com/gionkunz/chartist-js/master/dist/chartist.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.11.0/chartist.min.js"></script>
 		<script src="https://unpkg.com/chartist-plugin-tooltips@0.0.17"></script>
-		<script src="node_modules/chartist-plugin-legend/chartist-plugin-legend.js"></script>
-		<script src="node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.min.js"></script>
-		<script src="js/chartist-plugin-pointlabels.js"></script>
-		<script src="dashboard.js"></script>
-
+		<script src="../js/chartist-plugin-pointlabels.js"></script>
+		<script src="../node_modules/chartist-plugin-legend/chartist-plugin-legend.js"></script>
+		<script src="../node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.js"></script>
+		<script src="../dashboard.js"></script>
 </body>
 
 </html>

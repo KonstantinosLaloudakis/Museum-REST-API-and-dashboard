@@ -12,7 +12,7 @@ function setDefaultDateValues() {
   document.getElementById("dateTo").value = dateFormat;
 }
 
-function createChart(url, data, createChartFunc) {
+function createChart(url, createChartFunc) {
 	$.ajax({
 	  type: 'get',
 	  url: url,
@@ -35,7 +35,7 @@ function generateChart(type, domElement, data, options){
 }
 
 function visitPerHour() {
-	createChart('graph.php', { query: 1 }, function (json) {
+	createChart('../php/visitPerHour.php', function (json) {
 	  data = {
 		labels: hours,
 		series: [hours.map(hour => json.find(item => item.hour === hour)?.visits ?? 0)]
@@ -77,7 +77,7 @@ function visitPerHour() {
 }
 
 function visitPerExhibit() { 
-	createChart('graph.php', { query: 6 }, function (json) {
+	createChart('../php/visitPerExhibit.php', function (json) {
 	  data = {
 		labels: json.map(x => x.sensor),
 		series: json.map(x => x.sensorCount)
@@ -122,7 +122,7 @@ function visitPerExhibit() {
 }
 
   function timePerExhibit() { 
-	createChart('graph.php', { query: 7 }, function (json) {
+	createChart('../php/timePerExhibit.php', function (json) {
 	  data = {
 		labels: json.map(x => 'Έκθεμα ' + x.exhibit_no),
 		series: [json.map(x => parseFloat(x.avg_time).toFixed(2)),
@@ -174,7 +174,7 @@ function visitPerExhibit() {
 }
 
 function maxAndAvgTimePerExhibit() { 
-	createChart('graph.php', { query: 8 }, function (json) {
+	createChart('../php/maxAndAvgTimePerExhibit.php', { query: 8 }, function (json) {
 		data = {
 			labels: json.map(x => x.sensor_id),
 			series: [json.map(x => x.maxTime),
@@ -228,7 +228,7 @@ function maxAndAvgTimePerExhibit() {
 }
 
 function revisitability() { 
-	createChart('graph.php', { query: 9 }, function (json) {
+	createChart('../php/revisitability.php', function (json) {
 		data = {
 			labels: json.map(x => x.sensor_id),
 			series: [json.map(x => x.revisitability),
@@ -276,7 +276,7 @@ function revisitability() {
 }
 
 function visitsPerDay() { 
-	createChart('graph.php', { query: 10 }, function (json) {
+	createChart('../php/visitsPerDay.php',  function (json) {
 		data = {
 			labels: json.map(x => x.date),
 			series: json.map(x => x.no_of_visits)

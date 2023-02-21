@@ -128,38 +128,38 @@ require 'connect.php';
 
             <!-- Nav Item - Charts -->
             <li class="nav-item ">
-                <a class="nav-link" href="visitsPerHour.html">
+                <a class="nav-link" href="html/visitsPerHour.html">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Επισκέψεις ανά ώρα</span></a>
             </li>
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="visitsPerExhibit.html">
+                <a class="nav-link" href="html/visitsPerExhibit.html">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Επισκέψεις ανά έκθεμα</span></a>
             </li>
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="revisitability.html">
+                <a class="nav-link" href="html/revisitability.html">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Revisitability</span></a>
             </li>
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="visitsPerDay.html">
+                <a class="nav-link" href="html/visitsPerDay.html">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Επισκέψεις ανά μέρα</span></a>
             </li>
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="timePerExhibit.html">
+                <a class="nav-link" href="html/timePerExhibit.html">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Χρόνος θέασης ανά έκθεμα</span></a>
             </li>
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="appWristbands.html">
+                <a class="nav-link" href="html/appWristbands.html">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Μέσος και μέγιστος χρόνος ανά έκθεμα</span></a>
             </li>

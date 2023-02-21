@@ -1,13 +1,13 @@
-<?php
-$servername = "localhost";
+ <?php
+/*$servername = "localhost";
 $username = "id20059529_user";
 $password = "u6T9<0t(I_wB6N50";
-$database = "id20059529_restapidatabase";
+$database = "id20059529_restapidatabase";*/
 
-/*$servername = "localhost";
+$servername = "localhost";
 $username = "root";
 $password = "";
-$database = "tracksystem";*/
+$database = "tracksystem";
 
 try {
     //$conn = $mysqli = new mysqli("localhost", "root", "", "tracksystem");
