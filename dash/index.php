@@ -164,11 +164,11 @@ require 'php/connect.php';
                     <span>Μέσος και μέγιστος χρόνος ανά έκθεμα</span></a>
             </li>
             <!-- Nav Item - Tables -->
-            <!--<li class="nav-item">
-                <a class="nav-link" href="tables.html">
+            <li class="nav-item">
+                <a class="nav-link" href="html/onemore.html">
                     <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
-            </li>-->
+                    <span>one more</span></a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
