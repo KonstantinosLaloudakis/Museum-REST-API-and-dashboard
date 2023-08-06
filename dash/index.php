@@ -165,9 +165,9 @@ require 'php/connect.php';
             </li>
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="html/onemore.html">
+                <a class="nav-link" href="html/analytics.html">
                     <i class="fas fa-fw fa-table"></i>
-                    <span>one more</span></a>
+                    <span>Αναλυτικά στοιχεία</span></a>
             </li>
 
             <!-- Divider -->

@@ -18,10 +18,36 @@ class UserController extends BaseController
 					echo "VisitorId is empty";
 				}
 
+				$visitorType = $_POST['visitorType'];
+				if(empty($visitorType)){
+					echo "VisitorType is empty";
+				}
+				if (isset($_POST['routeId'])) {
+				echo "routeId exists";
+
+					$routeId = $_POST['routeId'];
+				}
+				else{
+				echo "routeId not exists";
+
+					$routeId = NULL;
+				}
+
 				$userModel->visitorIdExists($id);
-                $userModel->changeVIPStatus(1,$id);
+				echo "Checked if exists";
+
+                $userModel->changeVIPStatus($visitorType, $routeId, $id);
+				echo "Changed status";
+
+                $userModel->InsertToVipVisitorsInfo($visitorType, $routeId);
+				echo "Inserted to new table";
+
                 $num = $userModel->updateCounter();
+				echo "Updated counter";
+
 				$userModel->changeEventStatus($num, true);
+				echo "Changed event status";
+
                 //$responseData = json_encode($arrUsers);
             } catch (Error $e) {
                 $strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';
@@ -58,7 +84,7 @@ class UserController extends BaseController
 					echo "VisitorId is empty";
 				}
  
-                $userModel->changeVIPStatus(0,$id);
+                $userModel->changeVIPStatus(0, null, $id);
                 $num = $userModel->updateCounter();
 				$userModel->changeEventStatus($num, false);
                 //$responseData = json_encode($arrUsers);

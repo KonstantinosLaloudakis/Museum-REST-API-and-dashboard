@@ -3,12 +3,34 @@ require_once PROJECT_ROOT_PATH . "/Model/Database.php";
  
 class UserModel extends Database
 {
-    public function changeVIPStatus($isVIP, $id)
+    public function changeVIPStatus($visitorType, $routeId, $id)
     {
-        //return $this->select("SELECT * FROM mock_date ORDER BY id ASC LIMIT ?", ["i", $limit]);
-		mysqli_query($this->connection,"UPDATE visitorids SET isVIP = $isVIP WHERE id = $id");
-
+		echo "Changing vip status";
+    	$stmt = mysqli_prepare($this->connection, "UPDATE visitorids SET visitorType = ?, routeId = ? WHERE id = ?");
+    	mysqli_stmt_bind_param($stmt, "isi", $visitorType, $routeId, $id);
+    	if (mysqli_stmt_execute($stmt)) {
+       		// Query executed successfully, do something if needed
+    	} else {
+        	// Handle query execution error
+        	echo "Error updating VIP status: " . mysqli_error($this->connection);
+    	}
     }
+
+	public function InsertToVipVisitorsInfo($visitorType, $routeId)
+{
+    echo "Inserting to new table";
+    $stmt = mysqli_prepare($this->connection, "INSERT INTO vipvisitorsinfo (visitorType, routeId) VALUES (?, ?)");
+    mysqli_stmt_bind_param($stmt, "is", $visitorType, $routeId);
+    if (mysqli_stmt_execute($stmt)) {
+        // Query executed successfully, do something if needed
+
+        // Explicitly commit the changes to the database
+        mysqli_commit($this->connection);
+    } else {
+        // Handle query execution error
+        echo "Error inserting data to new table: " . mysqli_error($this->connection);
+    }
+}
 
 	public function linkUuidWithVisitorId($uuid, $visitorid)
     {
@@ -26,7 +48,7 @@ class UserModel extends Database
 		}
 		else
 		{
-    		$newVisitorId="INSERT INTO visitorids(id, isVIP) values($id, 0)";
+    		$newVisitorId="INSERT INTO visitorids(id, visitorType, routeId) values($id, 0, NULL)";
 			if (mysqli_query($this->connection,$newVisitorId))
 			{
 				echo "You are now registered";

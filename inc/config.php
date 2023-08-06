@@ -9,16 +9,16 @@
 $active_group = 'default';
 $query_builder = TRUE;
 
-define("DB_HOST", 'localhost');
+/*define("DB_HOST", 'localhost');
 define("DB_USERNAME", 'id20059529_user');
 define("DB_PASSWORD", 'u6T9<0t(I_wB6N50');
-define("DB_DATABASE_NAME", 'id20059529_restapidatabase');
+define("DB_DATABASE_NAME", 'id20059529_restapidatabase');*/
 
 
-/*define("DB_HOST", 'localhost');
+define("DB_HOST", 'localhost');
 define("DB_USERNAME", 'root');
 define("DB_PASSWORD", '');
-define("DB_DATABASE_NAME", 'tracksystem');*/
+define("DB_DATABASE_NAME", 'tracksystem');
 
 /*define("DB_HOST", $cleardb_server);
 define("DB_USERNAME", $cleardb_username);
