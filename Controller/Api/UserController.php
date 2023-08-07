@@ -7,65 +7,54 @@ class UserController extends BaseController
     public function setVIPAction()
     {
         $strErrorDesc = '';
+        $responseHeaders = array('Content-Type: application/json');
+        $responseCode = 200;
+
         $requestMethod = $_SERVER["REQUEST_METHOD"];
- 
+
         if (strtoupper($requestMethod) == 'POST') {
             try {
                 $userModel = new UserModel();
- 
+
                 $id = $_POST['visitorId'];
-				if(empty($id)){
-					echo "VisitorId is empty";
-				}
+                if (empty($id)) {
+                    $strErrorDesc = "VisitorId is empty";
+                }
 
-				$visitorType = $_POST['visitorType'];
-				if(empty($visitorType)){
-					echo "VisitorType is empty";
-				}
-				if (isset($_POST['routeId'])) {
-				echo "routeId exists";
+                $visitorType = $_POST['visitorType'];
+                if (empty($visitorType)) {
+                    $strErrorDesc = "VisitorType is empty";
+                }
 
-					$routeId = $_POST['routeId'];
-				}
-				else{
-				echo "routeId not exists";
+                if (isset($_POST['routeId'])) {
+                    $routeId = $_POST['routeId'];
+                } else {
+                    $routeId = NULL;
+                }
 
-					$routeId = NULL;
-				}
-
-				$userModel->visitorIdExists($id);
-				echo "Checked if exists";
-
-                $userModel->changeVIPStatus($visitorType, $routeId, $id);
-				echo "Changed status";
-
-                $userModel->InsertToVipVisitorsInfo($visitorType, $routeId);
-				echo "Inserted to new table";
-
-                $num = $userModel->updateCounter();
-				echo "Updated counter";
-
-				$userModel->changeEventStatus($num, true);
-				echo "Changed event status";
-
-                //$responseData = json_encode($arrUsers);
-            } catch (Error $e) {
-                $strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';
-                $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
+                if (!$strErrorDesc) {
+                    $userModel->visitorIdExists($id);
+                    $userModel->changeVIPStatus($visitorType, $routeId, $id);
+                    $userModel->InsertToVipVisitorsInfo($visitorType, $routeId);
+                    $num = $userModel->updateCounter();
+                    $userModel->changeEventStatus($num, true);
+                }
+            } catch (Exception $e) {
+                $strErrorDesc = 'Something went wrong! Please contact support.';
+                $responseCode = 500;
             }
         } else {
             $strErrorDesc = 'Method not supported';
-            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+            $responseCode = 422;
         }
- 
-        // send output
+
+        // Send output
         if (!$strErrorDesc) {
-            $this->sendOutput(
-                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
-            );
+            $this->sendOutput($responseHeaders, 'HTTP/1.1 200 OK');
         } else {
-            $this->sendOutput(json_encode(array('error' => $strErrorDesc)), 
-                array('Content-Type: application/json', $strErrorHeader)
+            $this->sendOutput(
+                array_merge($responseHeaders, array('HTTP/1.1 ' . $responseCode)),
+                json_encode(array('error' => $strErrorDesc))
             );
         }
     }
@@ -73,38 +62,39 @@ class UserController extends BaseController
 	public function unsetVIPAction()
     {
         $strErrorDesc = '';
+        $responseHeaders = array('Content-Type: application/json');
+        $responseCode = 200;
+
         $requestMethod = $_SERVER["REQUEST_METHOD"];
- 
+
         if (strtoupper($requestMethod) == 'POST') {
             try {
                 $userModel = new UserModel();
- 
-				$id = $_POST['visitorId'];
-				if(empty($id)){
-					echo "VisitorId is empty";
-				}
- 
-                $userModel->changeVIPStatus(0, null, $id);
-                $num = $userModel->updateCounter();
-				$userModel->changeEventStatus($num, false);
-                //$responseData = json_encode($arrUsers);
-            } catch (Error $e) {
-                $strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';
-                $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
+
+                $id = $_POST['visitorId'];
+                if (empty($id)) {
+                    $strErrorDesc = "VisitorId is empty";
+                } else {
+                    $userModel->changeVIPStatus(0, null, $id);
+                    $num = $userModel->updateCounter();
+                    $userModel->changeEventStatus($num, false);
+                }
+            } catch (Exception $e) {
+                $strErrorDesc = 'Something went wrong! Please contact support.';
+                $responseCode = 500;
             }
         } else {
             $strErrorDesc = 'Method not supported';
-            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+            $responseCode = 422;
         }
- 
-        // send output
+
+        // Send output
         if (!$strErrorDesc) {
-            $this->sendOutput(
-                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
-            );
+            $this->sendOutput($responseHeaders, 'HTTP/1.1 200 OK');
         } else {
-            $this->sendOutput(json_encode(array('error' => $strErrorDesc)), 
-                array('Content-Type: application/json', $strErrorHeader)
+            $this->sendOutput(
+                array_merge($responseHeaders, array('HTTP/1.1 ' . $responseCode)),
+                json_encode(array('error' => $strErrorDesc))
             );
         }
     }
@@ -112,57 +102,64 @@ class UserController extends BaseController
 	public function visitorDataAction()
     {
         $strErrorDesc = '';
+        $responseHeaders = array('Content-Type: application/json');
+        $responseCode = 200;
+
         $requestMethod = $_SERVER["REQUEST_METHOD"];
-        $arrQueryStringParams = $this->getQueryStringParams($_SERVER['REQUEST_URI'],"id");
- 
+        $arrQueryStringParams = $this->getQueryStringParams($_SERVER['REQUEST_URI'], "id");
+
         if (strtoupper($requestMethod) == 'GET') {
             try {
-				$userModel = new UserModel();
-							
-				$id = '' ;
-				if (isset($arrQueryStringParams["id"]) && $arrQueryStringParams["id"]) {
-					$id = $arrQueryStringParams["id"];
-				}
-			
-				$vipData = $userModel->getVipVisitorLatestData($id);
-				
-				if(empty($vipData)){
-					$response["status"] = "false";
-					$response["message"] = "No existant visitor!";
-				 }
-				 else{
-					$timestamp = new DateTime();
-					$timestamp->setTimestamp($vipData['timestamp']);
-					$timestamp = $timestamp->format('Y-m-d H:i:s');
-			
-					$Data['time'] = $timestamp;
-					$Data['rssi'] = $vipData['rssi'];
-					$Data['visitor_id'] = $vipData['visitorID'];
-					$Data['sensor_id'] = $vipData['cellID'];
-			
-					$response["status"] = "true";
-					$response["message"] = "Visitor Details";
-					$response["visitor"] = $Data;
-				 }
-				
-				echo json_encode($response);
-			} catch (Error $e) {
-				$strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';
-				$strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
-			}
+                $userModel = new UserModel();
+
+                $id = isset($arrQueryStringParams["id"]) ? $arrQueryStringParams["id"] : '';
+
+                $vipData = $userModel->getVipVisitorLatestData($id);
+
+                if (empty($vipData)) {
+                    $response = array(
+                        "status" => "false",
+                        "message" => "No existent visitor!"
+                    );
+                } else {
+                    $timestamp = new DateTime();
+                    $timestamp->setTimestamp($vipData['timestamp']);
+                    $formattedTimestamp = $timestamp->format('Y-m-d H:i:s');
+
+                    $data = array(
+                        'time' => $formattedTimestamp,
+                        'rssi' => $vipData['rssi'],
+                        'visitor_id' => $vipData['visitorID'],
+                        'sensor_id' => $vipData['cellID']
+                    );
+
+                    $response = array(
+                        "status" => "true",
+                        "message" => "Visitor Details",
+                        "visitor" => $data
+                    );
+                }
+
+                echo json_encode($response);
+            } catch (Exception $e) {
+                $strErrorDesc = 'Something went wrong! Please contact support.';
+                $responseCode = 500;
+            }
         } else {
             $strErrorDesc = 'Method not supported';
-            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+            $responseCode = 422;
         }
- 
-        // send output
+
+        // Send output
         if (!$strErrorDesc) {
-            $this->sendOutput(json_encode($response),
-                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+            $this->sendOutput(
+                array_merge($responseHeaders, array('HTTP/1.1 ' . $responseCode)),
+                json_encode($response)
             );
         } else {
-            $this->sendOutput(json_encode(array('error' => $strErrorDesc)), 
-                array('Content-Type: application/json', $strErrorHeader)
+            $this->sendOutput(
+                array_merge($responseHeaders, array('HTTP/1.1 ' . $responseCode)),
+                json_encode(array('error' => $strErrorDesc))
             );
         }
     }
@@ -170,41 +167,44 @@ class UserController extends BaseController
 	public function linkUuidAction()
     {
         $strErrorDesc = '';
+        $responseHeaders = array('Content-Type: application/json');
+        $responseCode = 200;
+
         $requestMethod = $_SERVER["REQUEST_METHOD"];
- 
+
         if (strtoupper($requestMethod) == 'POST') {
             try {
                 $userModel = new UserModel();
- 
-				$uuid = $_POST['uuid'];
-				if(empty($uuid)){
-					echo "Uuid is empty";
-				}
 
-				$visitorId = $_POST['visitorId'];
-				if(empty($visitorId)){
-					echo "VisitorId is empty";
-				}
+                $uuid = $_POST['uuid'];
+                if (empty($uuid)) {
+                    $strErrorDesc = "Uuid is empty";
+                }
 
-				$userModel->linkUuidWithVisitorId($uuid,$visitorId);
+                $visitorId = $_POST['visitorId'];
+                if (empty($visitorId)) {
+                    $strErrorDesc = "VisitorId is empty";
+                }
 
-				//echo json_encode($response);
-                //$responseData = json_encode($arrUsers);
-            } catch (Error $e) {
-                $strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';
-                $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
+                if (!$strErrorDesc) {
+                    $userModel->linkUuidWithVisitorId($uuid, $visitorId);
+                }
+            } catch (Exception $e) {
+                $strErrorDesc = 'Something went wrong! Please contact support.';
+                $responseCode = 500;
             }
         } else {
             $strErrorDesc = 'Method not supported';
-            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+            $responseCode = 422;
         }
- 
-        // send output
+
+        // Send output
         if (!$strErrorDesc) {
-            $this->sendOutput(array('Content-Type: application/json', 'HTTP/1.1 200 OK'));
+            $this->sendOutput($responseHeaders, 'HTTP/1.1 200 OK');
         } else {
-            $this->sendOutput(json_encode(array('error' => $strErrorDesc)), 
-                array('Content-Type: application/json', $strErrorHeader)
+            $this->sendOutput(
+                array_merge($responseHeaders, array('HTTP/1.1 ' . $responseCode)),
+                json_encode(array('error' => $strErrorDesc))
             );
         }
     }
