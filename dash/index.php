@@ -163,6 +163,16 @@ require 'php/connect.php';
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Μέσος και μέγιστος χρόνος ανά έκθεμα</span></a>
             </li>
+            <li class="nav-item ">
+				<a class="nav-link" href="html/routeIds.html">
+					<i class="fas fa-fw fa-chart-area"></i>
+					<span>Δημοφιλείς Διαδρομές</span></a>
+			</li>
+            <li class="nav-item">
+				<a class="nav-link" href="html/visitorTypes.html">
+					<i class="fas fa-fw fa-chart-area"></i>
+					<span>Κατηγορίες Επισκεπτών </span></a>
+			</li>
             <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link" href="html/analytics.html">
