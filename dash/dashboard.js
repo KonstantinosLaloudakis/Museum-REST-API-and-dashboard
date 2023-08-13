@@ -58,7 +58,10 @@ function generateChart(type, domElement, data, options){
 }
 
 function visitPerHour() {
-	createChart('../php/visitPerHour.php', function (json) {
+	// Get the values of the input elements with IDs "dateFrom" and "dateTo"
+	var dateFrom = document.getElementById('dateFrom').value;
+	var dateTo = document.getElementById('dateTo').value;
+	createChart('../php/visitPerHour.php?dateFrom=${dateFrom}&dateTo=${dateTo}', function (json) {
 	  data = {
 		labels: hours,
 		series: [hours.map(hour => json.find(item => item.hour === hour)?.visits ?? 0)]
