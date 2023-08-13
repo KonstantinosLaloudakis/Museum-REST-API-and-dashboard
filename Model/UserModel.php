@@ -44,23 +44,11 @@ class UserModel extends Database
     }
 
 	public function InsertToVipVisitorsInfo($visitorType, $routeId)
-	{
-		$query = "INSERT INTO vipvisitorsinfo (visitorType, routeId) VALUES (?, ?)";
-		$params = ['is', $visitorType, $routeId];
-		return $this->executeStatement($query, $params);
-		//echo "Inserting to new table";
-		//$stmt = mysqli_prepare($this->connection, "INSERT INTO vipvisitorsinfo (visitorType, routeId) VALUES (?, ?)");
-		//mysqli_stmt_bind_param($stmt, "is", $visitorType, $routeId);
-		//if (mysqli_stmt_execute($stmt)) {
-		//    // Query executed successfully, do something if needed
-
-		//    // Explicitly commit the changes to the database
-		//    mysqli_commit($this->connection);
-		//} else {
-		//    // Handle query execution error
-		//    echo "Error inserting data to new table: " . mysqli_error($this->connection);
-		//}
-	}
+{
+    $query = "INSERT INTO vipvisitorsinfo (visitorType, routeId, createdAt) VALUES (?, ?, UTC_TIMESTAMP())";
+    $params = ['is', $visitorType, $routeId];
+    return $this->executeStatement($query, $params);
+}
 
 	public function linkUuidWithVisitorId($uuid, $visitorid)
     {
