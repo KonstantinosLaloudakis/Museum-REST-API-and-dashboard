@@ -4,6 +4,28 @@ let config
 var date = new Date();
 var dateFormat = date.getFullYear() + "-" + ((date.getMonth() + 1).toString().length != 2 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)) + "-" + (date.getDate().toString().length != 2 ? "0" + date.getDate() : date.getDate());
 var hours = [];
+const visitorTypeMapping = {
+    1: 'Type A',
+    2: 'Type B',
+    3: 'Type C',
+    4: 'Type D',
+    5: 'Type E',
+    6: 'Type F',
+    7: 'Type G',
+    // Add more mappings as needed
+};
+
+const routeIdMapping = {
+    1: 'Route A',
+    2: 'Route B',
+    3: 'Route C',
+    4: 'Route D',
+    5: 'Route E',
+    6: 'Route F',
+    7: 'Route G',
+    // Add more mappings as needed
+};
+
 for (i = 0; i < 24; i++) {
   hours.push(('0' + i).slice(-2));
 }
@@ -174,6 +196,44 @@ function visitPerExhibit() {
 	});
 }
 
+function visitorTypes() { 
+	createChart('../php/visitorTypes.php', function (json) {
+	data = {
+		series: json.map(x => x.count)
+	}
+	new Chartist.Pie('.ct-chart', data, {
+		labelInterpolationFnc: function(value) {
+			return value;
+		  },
+  		showLabel: true,
+    	plugins: [
+        	Chartist.plugins.legend({
+				legendNames: json.map(x => visitorTypeMapping[x.visitorType])
+			})
+    	]
+	  });
+	});
+}
+
+function routeIds() { 
+	createChart('../php/routeIds.php', function (json) {
+	data = {
+		series: json.map(x => x.count)
+	}
+	new Chartist.Pie('.ct-chart', data, {
+		labelInterpolationFnc: function(value) {
+			return value;
+		  },
+  		showLabel: true,
+    	plugins: [
+        	Chartist.plugins.legend({
+				legendNames: json.map(x => routeIdMapping[x.routeId])
+			})
+    	]
+	  });
+	});
+}
+
 function maxAndAvgTimePerExhibit() { 
 	createChart('../php/maxAndAvgTimePerExhibit.php', function (json) {
 		data = {
@@ -341,6 +401,7 @@ function showSvg(selectedRoom) {
 	showSvg(selectedRoom);
   }
   
+  if (window.location.href.includes('analytics.html')) {
   // Add event listener to handle dropdown change
   const roomSelect = document.getElementById('roomSelect');
   roomSelect.addEventListener('change', handleDropdownChange);
@@ -349,7 +410,7 @@ function showSvg(selectedRoom) {
 	roomSelect.addEventListener('change', hidePopover);
   // Initially, show the SVG for the default selected room (e.g., Room 1)
   showSvg('svgRoom1');
-
+  }
 // Function to handle radio button selection
 function handleRadioSelection() {
 	const selectedRadioButton = document.querySelector('input[name="heatmapType"]:checked').value;
