@@ -196,7 +196,7 @@ function visitPerExhibit() {
 	});
 }
 
-function visitorTypes() { 
+/* function visitorTypes() { 
 	createChart('../php/visitorTypes.php', function (json) {
 	data = {
 		series: json.map(x => x.count)
@@ -215,7 +215,51 @@ function visitorTypes() {
     	]
 	  });
 	});
+} */
+
+function visitorTypes() { 
+    var chartContainer = document.querySelector('.ct-chart'); // Get the chart container element
+    
+    createChart('../php/visitorTypes.php', function (json) {
+        data = {
+            series: json.map(x => x.count)
+        };
+
+        var chartOptions = {
+            labelInterpolationFnc: function(value) {
+                return value;
+            },
+            showLabel: true,
+            width: 300,
+            height: 200,
+            plugins: [
+                Chartist.plugins.legend({
+                    legendNames: json.map(x => visitorTypeMapping[x.visitorType])
+                })
+            ]
+        };
+
+        // Function to set the chart container height
+        function setChartContainerHeight(height) {
+            chartContainer.style.height = height + 'px';
+        }
+
+        // Call the function with the initial height and adjust as needed
+        setChartContainerHeight(200); // Set initial height
+
+        // Example: Adjust height on window resize
+        window.addEventListener('resize', function () {
+            if (window.innerWidth <= 768) {
+                setChartContainerHeight(150); // Adjusted height for smaller screens
+            } else {
+                setChartContainerHeight(200); // Reset to default height
+            }
+        });
+
+        new Chartist.Pie('.ct-chart', data, chartOptions);
+    });
 }
+
 
 function routeIds() { 
 	createChart('../php/routeIds.php', function (json) {
