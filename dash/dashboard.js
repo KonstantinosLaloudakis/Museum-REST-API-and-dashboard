@@ -5,13 +5,12 @@ var date = new Date();
 var dateFormat = date.getFullYear() + "-" + ((date.getMonth() + 1).toString().length != 2 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)) + "-" + (date.getDate().toString().length != 2 ? "0" + date.getDate() : date.getDate());
 var hours = [];
 const visitorTypeMapping = {
-    1: 'Type A',
-    2: 'Type B',
-    3: 'Type C',
-    4: 'Type D',
-    5: 'Type E',
-    6: 'Type F',
-    7: 'Type G',
+    1: 'Ενήλικος',
+    2: 'Ανήλικος',
+    3: 'Ειδικός',
+    4: 'Adult',
+    5: 'Underage',
+    6: 'Expert',
     // Add more mappings as needed
 };
 
@@ -21,8 +20,6 @@ const routeIdMapping = {
     3: 'Route C',
     4: 'Route D',
     5: 'Route E',
-    6: 'Route F',
-    7: 'Route G',
     // Add more mappings as needed
 };
 
@@ -245,7 +242,7 @@ function visitorTypes() {
         }
 
         // Call the function with the initial height and adjust as needed
-        setChartContainerHeight(200); // Set initial height
+        setChartContainerHeight(500); // Set initial height
 
         // Example: Adjust height on window resize
         window.addEventListener('resize', function () {
