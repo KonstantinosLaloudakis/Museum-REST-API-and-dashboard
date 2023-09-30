@@ -5,59 +5,63 @@ class UserController extends BaseController
      * "/user/list" Endpoint - Get list of users
      */
     public function setVIPAction()
-    {
-        $strErrorDesc = '';
-        $responseHeaders = array('Content-Type: application/json');
-        $responseCode = 200;
+{
+    $strErrorDesc = '';
+    $responseHeaders = array('Content-Type: application/json');
+    $responseCode = 200;
 
-        $requestMethod = $_SERVER["REQUEST_METHOD"];
+    $requestMethod = $_SERVER["REQUEST_METHOD"];
 
-        if (strtoupper($requestMethod) == 'POST') {
-            try {
-                $userModel = new UserModel();
+    if (strtoupper($requestMethod) == 'POST') {
+        try {
+            $userModel = new UserModel();
 
-                $id = $_POST['visitorId'];
-                if (empty($id)) {
-                    $strErrorDesc = "VisitorId is empty";
-                }
-
-                $visitorType = $_POST['visitorType'];
-                if (empty($visitorType)) {
-                    $strErrorDesc = "VisitorType is empty";
-                }
-
-                if (isset($_POST['routeId'])) {
-                    $routeId = $_POST['routeId'];
-                } else {
-                    $routeId = NULL;
-                }
-
-                if (!$strErrorDesc) {
-                    $userModel->visitorIdExists($id);
-                    $userModel->changeVIPStatus($visitorType, $routeId, $id);
-                    $userModel->InsertToVipVisitorsInfo($visitorType, $routeId);
-                    $num = $userModel->updateCounter();
-                    $userModel->changeEventStatus($num, true);
-                }
-            } catch (Exception $e) {
-                $strErrorDesc = 'Something went wrong! Please contact support.';
-                $responseCode = 500;
+            $id = $_POST['visitorId'];
+            if (empty($id)) {
+                $strErrorDesc = "VisitorId is empty";
             }
-        } else {
-            $strErrorDesc = 'Method not supported';
-            $responseCode = 422;
-        }
 
-        // Send output
-        if (!$strErrorDesc) {
-            $this->sendOutput($responseHeaders, 'HTTP/1.1 200 OK');
-        } else {
-            $this->sendOutput(
-                array_merge($responseHeaders, array('HTTP/1.1 ' . $responseCode)),
-                json_encode(array('error' => $strErrorDesc))
-            );
+            $visitorType = $_POST['visitorType'];
+            if (empty($visitorType)) {
+                $strErrorDesc = "VisitorType is empty";
+            } elseif (!is_numeric($visitorType) || $visitorType < 1 || $visitorType > 6) {
+                $strErrorDesc = "Invalid value for VisitorType. Acceptable values are between 1 and 6.";
+            }
+
+            $routeId = NULL;
+            if (isset($_POST['routeId'])) {
+                $routeId = $_POST['routeId'];
+                if (!is_numeric($routeId) || $routeId < 1 || $routeId > 5) {
+                    $strErrorDesc = "Invalid value for RouteId. Acceptable values are between 1 and 5.";
+                }
+            }
+
+            if (!$strErrorDesc) {
+                $userModel->visitorIdExists($id);
+                $userModel->changeVIPStatus($visitorType, $routeId, $id);
+                $userModel->InsertToVipVisitorsInfo($visitorType, $routeId);
+                $num = $userModel->updateCounter();
+                $userModel->changeEventStatus($num, true);
+            }
+        } catch (Exception $e) {
+            $strErrorDesc = 'Something went wrong! Please contact support.';
+            $responseCode = 500;
         }
+    } else {
+        $strErrorDesc = 'Method not supported';
+        $responseCode = 422;
     }
+
+    // Send output
+    if (!$strErrorDesc) {
+        $this->sendOutput($responseHeaders, 'HTTP/1.1 200 OK');
+    } else {
+        $this->sendOutput(
+            array_merge($responseHeaders, array('HTTP/1.1 ' . $responseCode)),
+            json_encode(array('error' => $strErrorDesc))
+        );
+    }
+}
 
 	public function unsetVIPAction()
     {
