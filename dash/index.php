@@ -143,7 +143,7 @@ require 'php/connect.php';
             <li class="nav-item">
                 <a class="nav-link" href="html/revisitability.html">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Revisitability</span></a>
+                    <span>Επανεπισκεψιμότητα / Δύναμη Έλξης</span></a>
             </li>
             <!-- Nav Item - Charts -->
             <li class="nav-item">
@@ -166,7 +166,7 @@ require 'php/connect.php';
             <li class="nav-item ">
 				<a class="nav-link" href="html/routeIds.html">
 					<i class="fas fa-fw fa-chart-area"></i>
-					<span>Δημοφιλείς Διαδρομές</span></a>
+					<span>Προτεινόμενες διαδρομές</span></a>
 			</li>
             <li class="nav-item">
 				<a class="nav-link" href="html/visitorTypes.html">
@@ -451,7 +451,7 @@ require 'php/connect.php';
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                        Μοναδικοι επισκεπτες(σενσορες)</div>
+                                                        Μοναδικοί επισκέπτες</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                         <?php echo $row['totalVisitors']; ?>
                                                     </div>
@@ -471,7 +471,7 @@ require 'php/connect.php';
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                        VIP επισκεπτες</div>
+                                                        Επώνυμοι επισκέπτες</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                         <?php echo $row['vipVisitors']; ?>
                                                     </div>
