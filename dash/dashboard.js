@@ -5,21 +5,21 @@ var date = new Date();
 var dateFormat = date.getFullYear() + "-" + ((date.getMonth() + 1).toString().length != 2 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)) + "-" + (date.getDate().toString().length != 2 ? "0" + date.getDate() : date.getDate());
 var hours = [];
 const visitorTypeMapping = {
-    1: 'Ενήλικος',
-    2: 'Ανήλικος',
-    3: 'Ειδικός',
-    4: 'Adult',
-    5: 'Underage',
-    6: 'Expert',
+    1: 'Ενήλικος (EL)',
+    2: 'Ανήλικος (EL)',
+    3: 'Εμπειρογνώμονας (EL)',
+    4: 'Ενήλικος (ΕN)',
+    5: 'Ενήλικος (ΕN)',
+    6: 'Εμπειρογνώμονας (EN)',
     // Add more mappings as needed
 };
 
 const routeIdMapping = {
-    1: 'Route A',
-    2: 'Route B',
-    3: 'Route C',
-    4: 'Route D',
-    5: 'Route E',
+    1: 'Διαδρομή Α',
+    2: 'Διαδρομή Β',
+    3: 'Διαδροδρομή Γ',
+   // 4: 'Route D',
+    //5: 'Route E',
     // Add more mappings as needed
 };
 
@@ -75,7 +75,7 @@ function visitPerHour() {
 		  Chartist.plugins.tooltip(),
 		  Chartist.plugins.ctAxisTitle({
 			axisX: {
-			  axisTitle: "Hours",
+			  axisTitle: "Ώρες",
 			  axisClass: "ct-axis-title",
 			  offset: {
 				x: 0,
@@ -84,7 +84,7 @@ function visitPerHour() {
 			  textAnchor: "middle"
 			},
 			axisY: {
-			  axisTitle: "No.of visits",
+			  axisTitle: "Αριθμός επισκέψεων",
 			  axisClass: "ct-axis-title",
 			  offset: {
 				x: 0,
@@ -127,7 +127,7 @@ function visitPerHour() {
 		  }),
 		  Chartist.plugins.ctAxisTitle({
 			axisX: {
-			  axisTitle: "Exhibit/Έκθεμα",
+			  axisTitle: "Έκθεμα",
 			  axisClass: "ct-axis-title",
 			  offset: {
 				x: 0,
@@ -136,7 +136,7 @@ function visitPerHour() {
 			  textAnchor: "middle"
 			},
 			axisY: {
-			  axisTitle: "No. visits",
+			  axisTitle: "Αριθμός επισκέψεων",
 			  axisClass: "ct-axis-title",
 			  offset: {
 				x: 0,
@@ -157,7 +157,7 @@ function visitPerHour() {
   
   function timePerExhibit() {
 	createChart('../php/timePerExhibit.php', function(json) {
-	  const labels = json.map(x => 'Exhibit ' + x.exhibit_no);
+	  const labels = json.map(x => 'Έκθεμα ' + x.exhibit_no);
 	  const avgTime = json.map(x => parseFloat(x.avg_time).toFixed(2));
 	  const maxTime = json.map(x => parseFloat(x.max_time).toFixed(2));
 	  const minTime = json.map(x => parseFloat(x.min_time).toFixed(2));
@@ -178,7 +178,7 @@ function visitPerHour() {
 		plugins: [
 		  Chartist.plugins.ctAxisTitle({
 			axisX: {
-			  axisTitle: "Exhibit",
+			  axisTitle: "Εκθεμα",
 			  axisClass: "ct-axis-title",
 			  offset: {
 				x: 0,
@@ -187,7 +187,7 @@ function visitPerHour() {
 			  textAnchor: "middle"
 			},
 			axisY: {
-			  axisTitle: "Time",
+			  axisTitle: "Χρόνος Έκθεσης",
 			  axisClass: "ct-axis-title",
 			  offset: {
 				x: 0,
@@ -197,7 +197,7 @@ function visitPerHour() {
 			}
 		  }),
 		  Chartist.plugins.legend({
-			legendNames: ['Average', 'Maximum', 'Minimum', 'Total'],
+			legendNames: ['Μέσος', 'Μέγιστος', 'Ελάχιστος', 'Συνολικός'],
 		  })
 		],
 		axisX: {
@@ -311,7 +311,7 @@ function visitPerHour() {
 		plugins: [
 		  Chartist.plugins.ctAxisTitle({
 			axisX: {
-			  axisTitle: "Exhibit/Έκθεμα",
+			  axisTitle: "Έκθεμα",
 			  axisClass: "ct-axis-title",
 			  offset: {
 				x: 0,
@@ -320,7 +320,7 @@ function visitPerHour() {
 			  textAnchor: "middle"
 			},
 			axisY: {
-			  axisTitle: "Time/ Χρόνος",
+			  axisTitle: "Χρόνος",
 			  axisClass: "ct-axis-title",
 			  offset: {
 				x: 0,
@@ -331,7 +331,7 @@ function visitPerHour() {
 		  }),
 		  Chartist.plugins.tooltip(),
 		  Chartist.plugins.legend({
-			legendNames: ['Average', 'Maximum']
+			legendNames: ['Μέσος', 'Μέγιστος']
 		  })
 		]
 	  };
@@ -368,11 +368,11 @@ function visitPerHour() {
 		plugins: [
 		  Chartist.plugins.tooltip(),
 		  Chartist.plugins.legend({
-			legendNames: ['Revisitability', 'Power of attraction']
+			legendNames: ['Επανεπισκεψιμότητα', 'Δύναμη Έλξης']
 		  }),
 		  Chartist.plugins.ctAxisTitle({
 			axisX: {
-			  axisTitle: "Sensors",
+			  axisTitle: "Εκθέματα",
 			  axisClass: "ct-axis-title",
 			  offset: {
 				x: 0,
@@ -381,7 +381,7 @@ function visitPerHour() {
 			  textAnchor: "middle"
 			},
 			axisY: {
-			  axisTitle: "Value",
+			  axisTitle: "Τιμή",
 			  axisClass: "ct-axis-title",
 			  offset: {
 				x: 0,
@@ -427,7 +427,7 @@ function visitPerHour() {
 		  }),
 		  Chartist.plugins.ctAxisTitle({
 			axisX: {
-			  axisTitle: "Dates/ Ημερομηνίες",
+			  axisTitle: "Ημερομηνίες",
 			  axisClass: "ct-axis-title",
 			  offset: {
 				x: 0,
@@ -436,7 +436,7 @@ function visitPerHour() {
 			  textAnchor: "middle"
 			},
 			axisY: {
-			  axisTitle: "No. visits",
+			  axisTitle: "Αριθμός επισκέψεων",
 			  axisClass: "ct-axis-title",
 			  offset: {
 				x: 0,
