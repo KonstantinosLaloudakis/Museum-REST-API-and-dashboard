@@ -8,9 +8,99 @@
 
 .ct-series-b .ct-line,
 .ct-series-b .ct-point,
+.ct-series-b .ct-slice-pie,
 .ct-series-b .ct-bar {
 	stroke: blue;
+	fill: blue;
 }
+
+/* CSS for the star rating */
+.star-rating {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+.star-rating-inner {
+    display: inline-block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+}
+
+.star-rating-inner::before {
+    content: '★★★★★'; /* Unicode star character (★) */
+    font-size: 24px; /* Adjust the font size as needed */
+    letter-spacing: 4px; /* Adjust the spacing between stars as needed */
+    color: #FFD700; /* Color for filled stars (e.g., gold) */
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    width: 0;
+    overflow: hidden;
+}
+
+/* Adjust the color for unfilled stars (e.g., gray) */
+.star-rating-inner::after {
+    content: '★★★★★'; /* Unicode star character (★) */
+    font-size: 24px; /* Adjust the font size as needed */
+    letter-spacing: 4px; /* Adjust the spacing between stars as needed */
+    color: #ccc; /* Color for unfilled stars */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* CSS for filled stars */
+/* CSS for filled stars */
+.star.filled::before {
+    content: '★'; /* Unicode star character (★) or other star symbol */
+    color: #FFD700; /* Color for filled stars (e.g., gold) */
+    font-size: 32px; /* Increase the font size for bigger stars */
+}
+
+/* CSS for unfilled stars */
+.star.unfilled::before {
+    content: '☆'; /* Unicode empty star character (☆) or other symbol */
+    color: #ccc; /* Color for unfilled stars */
+    font-size: 32px; /* Increase the font size for bigger stars */
+}
+
+
+/* CSS for the popover content */
+.popover-content {
+    background-color: #ffffff; /* Background color for the popover */
+    border: 1px solid #ccc; /* Border style for the popover */
+    border-radius: 8px; /* Rounded corners for the popover */
+    padding: 10px; /* Spacing inside the popover */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Box shadow for a subtle lift effect */
+    text-align: center; /* Center-align content within the popover */
+}
+
+/* CSS for the rating info */
+.rating-info {
+    margin-top: 10px; /* Spacing between star rating and rating info */
+}
+
+/* CSS for the average rating */
+.average-rating {
+    font-size: 24px; /* Font size for the average rating */
+    color: #007BFF; /* Color for the average rating text (e.g., blue) */
+    font-weight: bold; /* Make the average rating text bold */
+}
+
+/* CSS for the total ratings */
+.total-ratings {
+    font-size: 16px; /* Font size for the total ratings */
+    color: #555; /* Color for the total ratings text (e.g., gray) */
+}
+
+
+/* Adjust the size, spacing, and other styles as needed */
+
+
 
 /* CSS for the spinner */
 .spinner {
