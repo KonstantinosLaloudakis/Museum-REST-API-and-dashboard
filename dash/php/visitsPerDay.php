@@ -1,14 +1,19 @@
 <?php
 require 'connect.php';
-$result = $mysqli->query("SELECT COUNT(*) as no_of_visits,
-DATE_FORMAT(ANY_VALUE(day), '%d/%m/%Y') as date
-FROM (
-SELECT COUNT(*) as no_of_visits, DATE(time_in) as day
-FROM `times`
-WHERE sensor_id != 0
-GROUP BY day
-) as cte
-ORDER BY day asc;
+$dateFrom = $_GET['dateFrom'];
+$dateTo = $_GET['dateTo'];
+
+$dateFromTimestamp = strtotime($dateFrom);
+$dateToTimestamp = strtotime($dateTo);
+
+$result = $mysqli->query("SELECT
+    DATE(FROM_UNIXTIME(timeIn)) AS visitDate,
+    COUNT(*) AS visitsPerDay
+    FROM groupeddata
+    WHERE timeIn >= '$dateFromTimestamp' 
+    AND timeOut <= '$dateToTimestamp'
+    GROUP BY visitDate
+    ORDER BY visitDate;
 ");
 $data = array();
 foreach ($result as $row) {

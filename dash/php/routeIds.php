@@ -1,11 +1,18 @@
 <?php
 require 'connect.php';
 
-$result = $mysqli->query("SELECT routeId, COUNT(*) AS count FROM `vipvisitorsinfo` GROUP BY routeId");
+$dateFrom = $_GET['dateFrom'];
+$dateTo = $_GET['dateTo'];
+
+$result = $mysqli->query("SELECT routeId, 
+COUNT(*) AS count 
+FROM `vipvisitorsinfo` 
+WHERE DATE(createdAt) BETWEEN DATE('$dateFrom') AND DATE('$dateTo')
+GROUP BY routeId");
 $data = array();
 
 foreach ($result as $row) {
-    $data[] = $row;
+	$data[] = $row;
 }
 
 print(json_encode($data));

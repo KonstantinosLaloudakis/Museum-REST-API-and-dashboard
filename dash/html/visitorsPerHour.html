@@ -9,7 +9,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 
-	<title>Επισκέψεις εκθεμάτων ανά μέρα</title>
+	<title>Επισκέπτες ανά ώρα</title>
 
 	<!-- Custom fonts for this template-->
 	<link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -59,7 +59,7 @@
 			</div> -->
 
 			<!-- Nav Item - Pages Collapse Menu -->
-			<!-- 	<li class="nav-item">
+			<!-- 			<li class="nav-item">
 				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
 					aria-expanded="true" aria-controls="collapseTwo">
 					<i class="fas fa-fw fa-cog"></i>
@@ -72,8 +72,8 @@
 						<a class="collapse-item" href="cards.html">Cards</a>
 					</div>
 				</div>
-			</li>
- -->
+			</li> -->
+
 			<!-- Nav Item - Utilities Collapse Menu -->
 			<!-- <li class="nav-item">
 				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
@@ -91,8 +91,8 @@
 						<a class="collapse-item" href="utilities-other.html">Other</a>
 					</div>
 				</div>
-			</li>
- -->
+			</li> -->
+
 			<!-- Divider -->
 			<hr class="sidebar-divider">
 
@@ -120,20 +120,20 @@
 						<a class="collapse-item" href="blank.html">Blank Page</a>
 					</div>
 				</div>
-			</li>
- -->
-			<li class="nav-item">
+			</li> -->
+
+			<!-- Nav Item - Charts -->
+			<!-- Nav Item - Charts -->
+			<li class="nav-item active">
 				<a class="nav-link" href="visitorsPerHour.html">
 					<i class="fas fa-fw fa-chart-area"></i>
 					<span>Επισκέπτες ανά ώρα</span></a>
 			</li>
-			<!-- Nav Item - Charts -->
 			<li class="nav-item">
 				<a class="nav-link" href="visitsPerHour.html">
 					<i class="fas fa-fw fa-chart-area"></i>
 					<span>Επισκέψεις εκθεμάτων ανά ώρα</span></a>
 			</li>
-
 			<!-- Nav Item - Charts -->
 			<li class="nav-item">
 				<a class="nav-link" href="visitsPerExhibit.html">
@@ -147,10 +147,10 @@
 					<span>Επανεπισκεψιμότητα / Δύναμη Έλξης</span></a>
 			</li>
 			<!-- Nav Item - Charts -->
-			<li class="nav-item active">
+			<li class="nav-item">
 				<a class="nav-link" href="visitsPerDay.html">
 					<i class="fas fa-fw fa-chart-area"></i>
-					<span>Επισκέψεις εκθεμάτων ανά μέρα</span></a>
+					<span>Επισκέψεις ανά μέρα</span></a>
 			</li>
 			<!-- Nav Item - Charts -->
 			<li class="nav-item">
@@ -158,7 +158,6 @@
 					<i class="fas fa-fw fa-chart-area"></i>
 					<span>Χρόνος θέασης ανά έκθεμα</span></a>
 			</li>
-			<!-- Nav Item - Charts -->
 
 			<li class="nav-item">
 				<a class="nav-link" href="routeIds.html">
@@ -292,8 +291,8 @@
 								</a>
 								<a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
 							</div>
-						</li> -->
-
+						</li>
+ -->
 					<!-- Nav Item - Messages -->
 					<!-- <li class="nav-item dropdown no-arrow mx-1">
 							<a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
@@ -357,8 +356,8 @@
 							</div>
 						</li>
 
-						<div class="topbar-divider d-none d-sm-block"></div> -->
-
+						<div class="topbar-divider d-none d-sm-block"></div>
+ -->
 					<!-- Nav Item - User Information -->
 					<!-- <li class="nav-item dropdown no-arrow">
 							<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
@@ -389,8 +388,8 @@
 							</div>
 						</li>
 
-					</ul>
- -->
+					</ul> -->
+
 				</nav>
 				<!-- End of Topbar -->
 
@@ -398,7 +397,7 @@
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<h1 class="h3 mb-2 text-gray-800">Επισκέψεις εκθεμάτων ανά μέρα</h1>
+					<h1 class="h3 mb-2 text-gray-800">Επισκέπτες ανά ώρα </h1>
 					<!--<p class="mb-4">Chart.js is a third party plugin that is used to generate the charts in this theme.
                         The charts below have been customized - for further customization options, please visit the <a
                             target="_blank" href="https://www.chartjs.org/docs/latest/">official Chart.js
@@ -406,7 +405,8 @@
 
 					<!-- Content Row -->
 					<div class="row">
-						<form onsubmit="visitsPerDay(); return false" class="filter-form">
+
+						<form onsubmit="visitorsPerHour(); return false" class="filter-form">
 							<div class="filters">
 								<div class="form-group">
 									<label for="dateFrom">Από</label>
@@ -423,23 +423,79 @@
 							</div>
 						</form>
 
-					</div>
-					<div class="col-12 mt-5">
-						<div class="ct-chart">
-						</div>
+						<!--<div class="col-xl-8 col-lg-7">-->
+
+
+
+
+						<!-- Area Chart -->
+						<!--<div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Area Chart</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="myAreaChart"></canvas>
+                                    </div>
+                                    <hr>
+                                    Styling for the area chart can be found in the
+                                    <code>/js/demo/chart-area-demo.js</code> file.
+                                </div>
+                            </div>
+-->
+						<!-- Bar Chart -->
+						<!--                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-bar">
+                                        <canvas id="myBarChart"></canvas>
+                                    </div>
+                                    <hr>
+                                    Styling for the bar chart can be found in the
+                                    <code>/js/demo/chart-bar-demo.js</code> file.
+                                </div>
+                            </div>
+
+                        </div>
+-->
+						<!-- Donut Chart -->
+						<!-- <div class="col-xl-4 col-lg-5">
+                            <div class="card shadow mb-4">-->
+						<!-- Card Header - Dropdown -->
+						<!--<div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
+                                </div>-->
+						<!-- Card Body -->
+						<!--<div class="card-body">
+                                    <div class="chart-pie pt-4">
+                                        <canvas id="myPieChart"></canvas>
+                                    </div>
+                                    <hr>
+                                    Styling for the donut chart can be found in the
+                                    <code>/js/demo/chart-pie-demo.js</code> file.
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+
 					</div>
 					<!-- /.container-fluid -->
+					<div class="col-12 mt-5">
+						<div class="ct-chart">
+
+						</div>
+					</div>
 
 				</div>
+
+
 				<!-- End of Main Content -->
 
 				<!-- Footer -->
 				<!-- <footer class="sticky-footer bg-white">
-					<div class="container my-auto">
-						<div class="copyright text-center my-auto">
-							<span>Copyright &copy; Your Website 2020</span>
-						</div>
-					</div>
+				
 				</footer> -->
 				<!-- End of Footer -->
 
@@ -485,20 +541,26 @@
 		<script src="../js/sb-admin-2.js"></script>
 
 		<!-- Page level plugins -->
-		<!--<script src="vendor/chart.js/Chart.min.js"></script>-->
+		<!-- <script src="vendor/chart.js/Chart.min.js"></script> -->
 
 		<!-- Page level custom scripts -->
-		<!--<script src="js/demo/chart-area-demo.js"></script>
+		<!-- <script src="js/demo/chart-area-demo.js"></script>
 		<script src="js/demo/chart-pie-demo.js"></script>
-		<script src="js/demo/chart-bar-demo.js"></script>-->
+		<script src="js/demo/chart-bar-demo.js"></script>
+
+
+ -->
 		<script src="../bower_components/chartist/dist/chartist.min.js"></script>
 		<script type="text/javascript" src="https://rawgit.com/gionkunz/chartist-js/master/dist/chartist.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.11.0/chartist.min.js"></script>
+		<script src="../node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.js"></script>
 		<script src="https://unpkg.com/chartist-plugin-tooltips@0.0.17"></script>
 		<script src="../js/chartist-plugin-pointlabels.js"></script>
 		<script src="../node_modules/chartist-plugin-legend/chartist-plugin-legend.js"></script>
 		<script src="../node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.js"></script>
 		<script src="../dashboard.js"></script>
+
+
 </body>
 
 </html>

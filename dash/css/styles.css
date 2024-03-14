@@ -6,12 +6,74 @@
 	stroke: rebeccapurple;
 }*/
 
+/* Add this CSS to your stylesheet */
+/* Add this CSS to your stylesheet */
+/* Add this CSS to your stylesheet */
+/* Add this CSS to your stylesheet */
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.filter-form .filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filter-form .filters .form-group {
+    flex-basis: calc(30% - 10px); /* Adjust the width and space as needed */
+    margin-right: 10px; /* Add margin to create space between filters */
+}
+
+.filter-form .submit-button {
+    flex-basis: 100%;
+    margin-top: 20px; /* Adjust the top margin as needed */
+}
+
+/* Add margin to the submit button */
+.filter-form button {
+    margin-top: 20px; /* Adjust the top margin as needed */
+}
+
+
+.heatmap-legend {
+    display: flex;
+    flex-direction: column;
+    /* Add any other styles you need for positioning */
+}
+
+.legend-gradient {
+    width: 100%; /* Adjust the width as needed */
+    height: 20px; /* Adjust the height as needed */
+    background: linear-gradient(to right, hsla(0, 100%, 50%, 0.5), hsla(120, 100%, 50%, 0.5));
+}
+.lowest-value {
+    margin-right: 10px;
+}
+
+.highest-value {
+    margin-left: 10px;
+}
+
+.legend-labels {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+
+
 .ct-series-b .ct-line,
 .ct-series-b .ct-point,
 .ct-series-b .ct-slice-pie,
 .ct-series-b .ct-bar {
 	stroke: blue;
-	fill: blue;
+	/*fill: blue;*/
 }
 
 /* CSS for the star rating */
@@ -405,14 +467,23 @@
 	border-color: #453d3f;
 }
 
-.ct-chart-line-multipleseries .ct-legend .ct-series-0:before {
-	background-color: #d70206;
-	border-color: #d70206;
+.ct-legend .ct-series-5:before {
+	background-color: #59922b;
+	border-color: #59922b;
 }
 
-.ct-chart-line-multipleseries .ct-legend .ct-series-1:before {
-	background-color: #f4c63d;
-	border-color: #f4c63d;
+.ct-series-b .ct-area,.ct-series-b .ct-slice-donut-solid,.ct-series-b .ct-slice-pie {
+    fill: blue
+}
+
+/* Style for revisitability series */
+.ct-series.ct-revisitability .ct-line {
+    stroke: #00ff00; /* Green color for revisitability line */
+}
+
+/* Style for attractionPower series */
+.ct-series.ct-attractionPower .ct-line {
+    stroke: #ff0000; /* Red color for attractionPower line */
 }
 
 .ct-chart-line-multipleseries .ct-legend li.inactive:before {

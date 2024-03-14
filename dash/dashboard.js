@@ -17,7 +17,7 @@ const visitorTypeMapping = {
 const routeIdMapping = {
     1: 'Διαδρομή Α',
     2: 'Διαδρομή Β',
-    3: 'Διαδροδρομή Γ',
+    3: 'Διαδρομή Γ',
    // 4: 'Route D',
     //5: 'Route E',
     // Add more mappings as needed
@@ -55,8 +55,11 @@ function generateChart(type, domElement, data, options){
 }
 
 function visitPerHour() {
-	createChart('../php/visitPerHour.php', function (json) {
-	  const visits = hours.map(hour => json.find(item => item.hour === hour)?.visits ?? 0);
+	const dateFrom = document.getElementById('dateFrom').value;
+    const dateTo = document.getElementById('dateTo').value;
+	const url = '../php/visitPerHour.php?dateFrom=' + dateFrom + '&dateTo=' + dateTo;
+	createChart(url, function (json) {
+	  const visits = hours.map(hour => json.find(item => item.visitHour === hour)?.visitsPerHour ?? 0);
 	  const data = {
 		labels: hours,
 		series: [visits]
@@ -67,7 +70,7 @@ function visitPerHour() {
 		showArea: true,
 		chartPadding: {
 		  top: 20,
-		  right: 0,
+		  right: 40,
 		  bottom: 25,
 		  left: 20
 		},
@@ -98,13 +101,66 @@ function visitPerHour() {
 	  generateChart('line', '.ct-chart', data, chartOptions);
 	});
   }
+
+  function visitorsPerHour() {
+	const dateFrom = document.getElementById('dateFrom').value;
+    const dateTo = document.getElementById('dateTo').value;
+	const url = '../php/visitorsPerHour.php?dateFrom=' + dateFrom + '&dateTo=' + dateTo;
+	createChart(url, function (json) {
+	  const visits = hours.map(hour => json.find(item => item.visitHour === hour)?.totalVisitorsPerHour ?? 0);
+	  const data = {
+		labels: hours,
+		series: [visits]
+	  };
+	  const chartOptions = {
+		low: 0,
+		height: 400,
+		showArea: true,
+		chartPadding: {
+		  top: 20,
+		  right: 40,
+		  bottom: 25,
+		  left: 20
+		},
+		plugins: [
+		  Chartist.plugins.tooltip(),
+		  Chartist.plugins.ctAxisTitle({
+			axisX: {
+			  axisTitle: "Ώρες",
+			  axisClass: "ct-axis-title",
+			  offset: {
+				x: 0,
+				y: 50
+			  },
+			  textAnchor: "middle"
+			},
+			axisY: {
+			  axisTitle: "Αριθμός επισκεπτών",
+			  axisClass: "ct-axis-title",
+			  offset: {
+				x: 0,
+				y: -1
+			  },
+			  flipTitle: false
+			}
+		  })
+		]
+	  };
+	  generateChart('line', '.ct-chart', data, chartOptions);
+	});
+  }
   
   //////////////////////////////////////////////////
   
   function visitPerExhibit() {
-	createChart('../php/visitPerExhibit.php', function (json) {
-	  const labels = json.map(x => x.sensor);
-	  const series = json.map(x => x.sensorCount);
+	const dateFrom = document.getElementById('dateFrom').value;
+    const dateTo = document.getElementById('dateTo').value;
+	const buildingSelect = document.getElementById('buildingSelect').value; // Get the selected building value
+    const url = `../php/visitPerExhibit.php?dateFrom=${dateFrom}&dateTo=${dateTo}&building=${buildingSelect}`;
+    
+	createChart(url, function (json) {
+	  const labels = json.map(x => x.roomName);
+	  const series = json.map(x => x.totalVisits);
   
 	  const data = {
 		labels: labels,
@@ -112,10 +168,13 @@ function visitPerHour() {
 	  };
   
 	  const chartOptions = {
+		low: 0,
+		height: 400,
+		showArea: true,
 		distributeSeries: true,
 		chartPadding: {
 		  top: 20,
-		  right: 0,
+		  right: 40,
 		  bottom: 25,
 		  left: 20
 		},
@@ -156,12 +215,18 @@ function visitPerHour() {
   ////////////////////////////////////////////////
   
   function timePerExhibit() {
-	createChart('../php/timePerExhibit.php', function(json) {
-	  const labels = json.map(x => 'Έκθεμα ' + x.exhibit_no);
+
+	const dateFrom = document.getElementById('dateFrom').value;
+    const dateTo = document.getElementById('dateTo').value;
+	const buildingSelect = document.getElementById('buildingSelect').value; // Get the selected building value
+    const url = `../php/timePerExhibit.php?dateFrom=${dateFrom}&dateTo=${dateTo}&building=${buildingSelect}`;
+    
+	createChart(url, function(json) {
+	  const labels = json.map(x => x.exhibit_name);
 	  const avgTime = json.map(x => parseFloat(x.avg_time).toFixed(2));
 	  const maxTime = json.map(x => parseFloat(x.max_time).toFixed(2));
 	  const minTime = json.map(x => parseFloat(x.min_time).toFixed(2));
-	  const sumTime = json.map(x => parseFloat(x.sum).toFixed(2));
+	  const sumTime = json.map(x => parseFloat(x.total_time).toFixed(2));
   
 	  const data = {
 		labels: labels,
@@ -169,16 +234,19 @@ function visitPerHour() {
 	  };
   
 	  const chartOptions = {
+		low: 0,
+		height: 400,
+		showArea: true,
 		chartPadding: {
 		  top: 20,
-		  right: 0,
+		  right: 40,
 		  bottom: 25,
 		  left: 20
 		},
 		plugins: [
 		  Chartist.plugins.ctAxisTitle({
 			axisX: {
-			  axisTitle: "Εκθεμα",
+			  axisTitle: "Έκθεμα",
 			  axisClass: "ct-axis-title",
 			  offset: {
 				x: 0,
@@ -187,7 +255,7 @@ function visitPerHour() {
 			  textAnchor: "middle"
 			},
 			axisY: {
-			  axisTitle: "Χρόνος Έκθεσης",
+			  axisTitle: "Χρόνος Θέασης (secs)",
 			  axisClass: "ct-axis-title",
 			  offset: {
 				x: 0,
@@ -217,8 +285,11 @@ function visitPerHour() {
   
   function visitorTypes() {
 	const chartContainer = document.querySelector('.ct-chart'); // Get the chart container element
-  
-	createChart('../php/visitorTypes.php', function (json) {
+	const dateFrom = document.getElementById('dateFrom').value;
+    const dateTo = document.getElementById('dateTo').value;
+	const url = `../php/visitorTypes.php?dateFrom=${dateFrom}&dateTo=${dateTo}`;
+    
+	createChart(url, function (json) {
 	  const data = {
 		series: json.map(x => x.count)
 	  };
@@ -263,7 +334,11 @@ function visitPerHour() {
   /////////////////////////////////////////////////////////
   
   function routeIds() {
-	createChart('../php/routeIds.php', function(json) {
+	const dateFrom = document.getElementById('dateFrom').value;
+    const dateTo = document.getElementById('dateTo').value;
+	const url = `../php/routeIds.php?dateFrom=${dateFrom}&dateTo=${dateTo}`;
+
+	createChart(url, function(json) {
 	  const data = {
 		series: json.map(x => x.count)
 	  };
@@ -272,6 +347,8 @@ function visitPerHour() {
 		  return value;
 		},
 		showLabel: true,
+		width: 300,
+		height: 200,
 		plugins: [
 		  Chartist.plugins.legend({
 			legendNames: json.map(x => routeIdMapping[x.routeId])
@@ -285,69 +362,17 @@ function visitPerHour() {
   
   ///////////////////////////////////////////////////////////////
   
-  function maxAndAvgTimePerExhibit() {
-	createChart('../php/maxAndAvgTimePerExhibit.php', function(json) {
-	  const labels = json.map(x => x.sensor_id);
-	  const maxTime = json.map(x => x.maxTime);
-	  const avgTime = json.map(x => x.avgTime);
-  
-	  const data = {
-		labels: labels,
-		series: [maxTime, avgTime]
-	  };
-  
-	  const chartOptions = {
-		lineSmooth: Chartist.Interpolation.simple({
-		  divisor: 2
-		}),
-		fullWidth: true,
-		chartPadding: {
-		  right: 20,
-		  top: 20,
-		  bottom: 25,
-		  left: 20
-		},
-		low: 0,
-		plugins: [
-		  Chartist.plugins.ctAxisTitle({
-			axisX: {
-			  axisTitle: "Έκθεμα",
-			  axisClass: "ct-axis-title",
-			  offset: {
-				x: 0,
-				y: 50
-			  },
-			  textAnchor: "middle"
-			},
-			axisY: {
-			  axisTitle: "Χρόνος",
-			  axisClass: "ct-axis-title",
-			  offset: {
-				x: 0,
-				y: -1
-			  },
-			  flipTitle: false
-			}
-		  }),
-		  Chartist.plugins.tooltip(),
-		  Chartist.plugins.legend({
-			legendNames: ['Μέσος', 'Μέγιστος']
-		  })
-		]
-	  };
-  
-	  generateChart('line', '.ct-chart', data, chartOptions);
-	});
-  }
-  
-  
-  //////////////////////////////////////////////////////////
-  
   function revisitability() {
-	createChart('../php/revisitability.php', function(json) {
-	  const labels = json.map(x => x.sensor_id);
+
+	const dateFrom = document.getElementById('dateFrom').value;
+    const dateTo = document.getElementById('dateTo').value;
+	const buildingSelect = document.getElementById('buildingSelect').value; // Get the selected building value
+    const url = `../php/revisitability.php?dateFrom=${dateFrom}&dateTo=${dateTo}&building=${buildingSelect}`;
+	
+	createChart(url, function(json) {
+	  const labels = json.map(x => x.roomName);
 	  const revisitabilityData = json.map(x => x.revisitability);
-	  const powerOfAttractionData = json.map(x => x.power_of_attraction);
+	  const powerOfAttractionData = json.map(x => x.attractionPower);
   
 	  const data = {
 		labels: labels,
@@ -356,9 +381,12 @@ function visitPerHour() {
   
 	  const chartOptions = {
 		fullWidth: true,
+		low: 0,
+		height: 400,
+		showArea: true,
 		chartPadding: {
 		  top: 20,
-		  right: 0,
+		  right: 50,
 		  bottom: 25,
 		  left: 20
 		},
@@ -394,6 +422,7 @@ function visitPerHour() {
 	  };
   
 	  generateChart('line', '.ct-chart-line', data, chartOptions);
+
 	});
   }
   
@@ -402,9 +431,12 @@ function visitPerHour() {
   
   
   function visitsPerDay() {
-	createChart('../php/visitsPerDay.php', function(json) {
-	  const labels = json.map(x => x.date);
-	  const series = json.map(x => x.no_of_visits);
+	const dateFrom = document.getElementById('dateFrom').value;
+    const dateTo = document.getElementById('dateTo').value;
+	const url = '../php/visitsPerDay.php?dateFrom=' + dateFrom + '&dateTo=' + dateTo;
+	createChart(url, function(json) {
+	  const labels = json.map(x => x.visitDate);
+	  const series = json.map(x => x.visitsPerDay);
   
 	  const data = {
 		labels: labels,
@@ -413,9 +445,12 @@ function visitPerHour() {
   
 	  const chartOptions = {
 		distributeSeries: true,
+		low: 0,
+		height: 400,
+		showArea: true,
 		chartPadding: {
 		  top: 20,
-		  right: 0,
+		  right: 40,
 		  bottom: 25,
 		  left: 20
 		},
@@ -482,12 +517,42 @@ function visitPerHour() {
 	
 	deleteGeneratedShapes();
 	
-	if (selectedRadioButton === "popularRoutes") {
-	  createRoutes();
-	} else {
-	  createHeatmap();
-	}
+	if (selectedRadioButton === "attraction") {
+		loadDataFromPHP('../php/attractionPower_data.php', 'attraction');
+	  } else if (selectedRadioButton === "holding") {
+		loadDataFromPHP('../php/holding_data.php', 'holding');
+	  } else if (selectedRadioButton === "revisitability") {
+		loadDataFromPHP('../php/revisitability_data.php', 'revisitability');
+	  } else if (selectedRadioButton === "popularRoutes") {
+		loadPopularRoutesFromPHP('../php/popularRoutes.php');
+	  }
   }
+
+  function loadDataFromPHP(dataURL, selectedRadioButton) {
+	// Make an AJAX request to the PHP file and create circles based on the data
+	fetch(dataURL)
+	  .then((response) => response.json())
+	  .then((data) => {
+		createCirclesFromData(data, selectedRadioButton);
+	  })
+	  .catch((error) => {
+		console.error('Error loading data:', error);
+	  });
+  }
+
+  function loadPopularRoutesFromPHP(dataURL) {
+	// Make an AJAX request to the PHP file and create circles based on the data
+	fetch(dataURL)
+	  .then((response) => response.json())
+	  .then((data) => {
+		createPopularRoutes(data);
+	  })
+	  .catch((error) => {
+		console.error('Error loading data:', error);
+	  });
+  }
+
+
   
   if (window.location.href.includes('analytics.html')) {
 	const roomSelect = document.getElementById('roomSelect');
@@ -495,7 +560,7 @@ function visitPerHour() {
 	roomSelect.addEventListener('change', handleDropdownChange);
 	roomSelect.addEventListener('change', hidePopover);
 	
-	showSvg('svgRoom1');
+	showSvg('svgRoom4');
   }
   
   
@@ -520,8 +585,8 @@ function visitPerHour() {
 
    function getRatings(callback){
 	$.ajax({
-		url: '../php/getCellRatings.php', // URL to the server-side script
-		method: 'GET',
+		url: 'https://melt.reasonablegraph.org/api/v1/app1/getRatingsPerCellAggregated', // New API endpoint URL
+    	method: 'GET',
 		dataType: 'json',
 		success: function(data) {
 			 // Process the data received from the server
@@ -560,107 +625,178 @@ function visitPerHour() {
   
   ///////////////////////////////////////////////////////////////////////////////////
   
-  function createHeatmap() {
+  function createCirclesFromData(data, selectedRadioButton) {
 	const svgContainer = document.getElementById(selectedSVGId);
 	const heatmapGTags = svgContainer.querySelectorAll('g[transform]');
+		
+	// Extract the IDs from heatmapGTags
+	const gTagIds = Array.from(heatmapGTags).map((gTag) => gTag.getAttribute('id'));
+
+	// Filter data to only include items with IDs that are in gTagIds
+	const filteredData = data.filter((item) => gTagIds.includes(item.cellId));
   
-	heatmapGTags.forEach((gTag) => {
-	  const value = Math.floor(Math.random() * 100);
-	  gTag.setAttribute("data-value", value);
+	if (filteredData.length === 0) {
+	  // No matching data, handle this case as needed
+	  return;
+	}
   
-	  const path = gTag.querySelector('path');
-	  const pathBoundingBox = path.getBBox();
+	// Find the minimum and maximum values from filteredData
+	const values = filteredData.map((item) => item[selectedRadioButton]);
+	let minValue = Math.min(...values);
+	let maxValue = Math.max(...values);
+	if(minValue == maxValue){
+		minValue = 0;
+	}
+	filteredData.forEach((item) => {
+		const gTagId = item.cellId;
+		const gTag = Array.from(heatmapGTags).find((gTag) => gTag.getAttribute('id') === gTagId);
+    	if (gTag) {
+				const value = item[selectedRadioButton];
+				const path = gTag.querySelector('path');
+				const pathBoundingBox = path.getBBox();
+			
+				const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+				circle.setAttribute("cx", pathBoundingBox.x + pathBoundingBox.width / 2);
+				circle.setAttribute("cy", pathBoundingBox.y + pathBoundingBox.height / 2);
+				circle.setAttribute("r", "20");
+			
+				// Scale the value between 0 and 1
+        const scaledValue = (value - minValue) / (maxValue - minValue);
+
+        // Calculate the color based on the scaled value (green to red gradient)
+        const hue = 120 - (scaledValue * 120); // Adjust the hue for the gradient
+const saturation = 100;
+const lightness = 50;
+const color = `hsla(${hue}, ${saturation}%, ${lightness}%, 0.5)`;
+        circle.setAttribute("fill", color);
+
+				/*const scaledValue = value * 100; // Scale the values to a 0-100 range
+				const hue = 120 - (scaledValue * 1.2);
+				const saturation = 100;
+				const lightness = 50;
+			
+				circle.setAttribute("fill", `hsla(${hue}, ${saturation}%, ${lightness}%, 0.5)`);
+			*/
+				gTag.appendChild(circle);
+			}
+
+		  });
+  }
+
+  function groupReversedPairs(data, svgContainer) {
+	const groupedData = [];
   
-	  const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-	  circle.setAttribute("cx", pathBoundingBox.x + pathBoundingBox.width / 2);
-	  circle.setAttribute("cy", pathBoundingBox.y + pathBoundingBox.height / 2);
-	  circle.setAttribute("r", "20");
+	data.forEach((row) => {
+	  const { firstCellId, secondCellId, totalAppearances } = row;
+	  const reversedPairIndex = groupedData.findIndex((groupedRow) =>
+		(groupedRow.firstCellId === secondCellId && groupedRow.secondCellId === firstCellId)
+	  );
   
-	  const hue = 120 - (value * 1.2);
-	  const saturation = 100;
-	  const lightness = 50;
-  
-	  circle.setAttribute("fill", `hsla(${hue}, ${saturation}%, ${lightness}%, 0.5)`);
-  
-	  gTag.appendChild(circle);
+	  if (reversedPairIndex !== -1) {
+		// Found a reversed pair, update totalAppearances
+		groupedData[reversedPairIndex].totalAppearances += Number(totalAppearances);
+	  } else {
+		// No reversed pair found, add the row to the grouped data if both cell IDs are in the SVG container
+		if (
+		  svgContainer.getElementById(firstCellId) &&
+		  svgContainer.getElementById(secondCellId)
+		) {
+		  groupedData.push({
+			firstCellId,
+			secondCellId,
+			totalAppearances: Number(totalAppearances),
+		  });
+		}
+	  }
 	});
+  
+	return groupedData;
   }
   
   //////////////////////////////////////////////////////
   
-  function createRoutes() {
+  function createPopularRoutes(data) {
 	// Sample list of strings containing room IDs
-	const stringList = [
-	  'Room2, Room3, Room4',
-	  'Room1, Room2, Room3',
-	  'Room1, Room2, Room3',
-	  'Room1, Room2, Room3',
-	  'Room1, Room7, Room2',
-	  'Room3, Room4, Room5',
-	  'Room5, Room6, Room9',
-	  'Room8, Room9, Room6'
-	];
-  
 	if (selectedSVGId) {
-	  const svgContainer = document.getElementById(selectedSVGId);
-  
-	  // Track the number of times a line is repeated between two room IDs
-	  const lineCounts = {};
-  
-	  // Iterate over each string
-	  stringList.forEach((string) => {
-		// Extract the room IDs from the string
-		const roomIds = string.split(',').map((roomId) => roomId.trim());
-  
-		// Find the corresponding 'g' elements
-		const gElements = roomIds.map((roomId) => svgContainer.getElementById(roomId));
-  
-		// Create a line connecting the 'g' elements
-		for (let i = 0; i < gElements.length - 1; i++) {
-		  const start = gElements[i];
-		  const end = gElements[i + 1];
-  
-		  // Generate a unique identifier for the line based on the room IDs
-		  const lineId = `${start.id}-${end.id}`;
-  
-		  // Increment the line count or initialize it to 1
-		  lineCounts[lineId] = lineCounts[lineId] ? lineCounts[lineId] + 1 : 1;
-  
-		  // Calculate the gradient value based on the line count
-		  const gradientValue = 1 - 1 / (lineCounts[lineId] + 1);
-  
-		  // Calculate the stroke color based on the gradient value
-		  const strokeColor = getStrokeColor(lineCounts[lineId]);
-  
-		  // Calculate the stroke width based on the line count
-		  const strokeWidth = getStrokeWidth(lineCounts[lineId]); // Adjust the thickness as desired
-  
-		  // Create the line element
-		  const line = createLineElement(start, end, strokeColor, strokeWidth);
-  
-		  // Append the line to the SVG
-		  svgContainer.appendChild(line);
-		}
-	  });
+		const svgContainer = document.getElementById(selectedSVGId);
+
+		// Track min and max totalAppearances within the container
+		const totalAppearancesValues = [];
+
+		// Process the data to group reversed pairs
+		const groupedData = groupReversedPairs(data, svgContainer);
+
+		// Find the min and max totalAppearances within the container
+		groupedData.forEach((row) => {
+			totalAppearancesValues.push(row.totalAppearances);
+		  });
+	  
+		  // Find the min and max totalAppearances within the container
+		  const minTotalAppearances = Math.min(...totalAppearancesValues);
+		  const maxTotalAppearances = Math.max(...totalAppearancesValues);
+
+			// Iterate over each row in the processed data
+			groupedData.forEach((row) => {
+				// Extract relevant information from the row
+				const { firstCellId, secondCellId, totalAppearances } = row;
+		  
+				// Find the corresponding 'g' elements
+				const start = svgContainer.getElementById(firstCellId);
+				const end = svgContainer.getElementById(secondCellId);
+		  
+				// Check if both start and end elements are found in the svgContainer
+				if (start && end) {
+				  // Calculate the gradient value based on the min and max totalAppearances within the container
+				  const gradientValue = (totalAppearances - minTotalAppearances) / (maxTotalAppearances - minTotalAppearances);
+		  
+				  // Example color logic: Interpolate color using HSLA
+				  const strokeColor = getGradientColor(gradientValue);
+		  
+				  // Example stroke width logic (you can adjust this based on your preferences)
+				  const strokeWidth = getStrokeWidth(totalAppearances);
+		  
+				  // Create the line element
+				  const line = createLineElement(start, end, strokeColor, strokeWidth);
+		  
+				  // Append the line to the SVG
+				  svgContainer.appendChild(line);
+				}
+		});
 	}
   }
   
   
   ////////////////////////////////////
+  document.addEventListener('DOMContentLoaded', function() {
+    const buildingSelect = document.getElementById('buildingSelect');
+    if (buildingSelect) {
+        enableSubmitButton();
+    }
+});
+
+  function enableSubmitButton() {
+    const buildingSelect = document.getElementById('buildingSelect');
+    const submitButton = document.getElementById('submitButton');
+
+    buildingSelect.addEventListener('change', function() {
+        if (buildingSelect.value) {
+            submitButton.removeAttribute('disabled');
+        } else {
+            submitButton.setAttribute('disabled', 'disabled');
+        }
+    });
+}
   
+function getGradientColor(gradientValue) {
+	// Interpolate color using HSLA
+	const hue = 120 - gradientValue * 120; // Adjust the hue range as needed
+	const saturation = 100; // Full saturation
+	const lightness = 50; // Medium lightness
+	const alpha = 1; // Full opacity
   
-  function getStrokeColor(lineCount) {
-	  const green = 120;
-	  const red = 0;
-	
-	  const hue = green - (lineCount - 1) * (green / 9); // Line count ranges from 1 to 10
-	  const saturation = 100;
-	  const lightness = 50;
-	
-	  return `hsla(${hue}, ${saturation}%, ${lightness}%, 1)`;
-	}
-	function getStrokeWidth(lineCount) {
-	  //return 2 + 0.3 * lineCount; // Adjust the thickness as desired
+	return `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
+  }
+	function getStrokeWidth(totalAppearance) {
 	  return 2; // Adjust the thickness as desired
 	}
 	

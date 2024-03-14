@@ -1,12 +1,26 @@
 <?php
 require 'connect.php';
-$result = $mysqli->query("SELECT grouped_data.sensor_id AS sensor, COUNT(grouped_data.sensor_id) AS sensorCount
-FROM (
-    SELECT MIN(time_in) as time_in, MIN(time_out) as time_out, visitor_id, sensor_id
-    FROM `beacon_data_test`
-    GROUP BY visitor_id, sensor_id
-) AS grouped_data
-GROUP BY grouped_data.sensor_id;");
+$dateFrom = $_GET['dateFrom'];
+$dateTo = $_GET['dateTo'];
+$building = $_GET['building']; // Get the selected building value from the query parameter
+
+$dateFromTimestamp = strtotime($dateFrom);
+$dateToTimestamp = strtotime($dateTo);
+
+// Modify the SQL query to filter based on the selected building
+$result = $mysqli->query("SELECT
+    g.cellId,
+    SUM(1) AS totalVisits,
+    c.roomName as roomName
+    FROM groupeddata AS g
+    INNER JOIN cellids AS c ON g.cellId = c.id
+    WHERE g.timeIn >= '$dateFromTimestamp' 
+    AND g.timeOut <= '$dateToTimestamp'
+    AND c.roomName LIKE '$building%'  -- Use LIKE to match the building
+    GROUP BY g.cellId, c.roomName
+    ORDER BY c.roomName;
+");
+
 $data = array();
 foreach ($result as $row) {
 	$data[] = $row;

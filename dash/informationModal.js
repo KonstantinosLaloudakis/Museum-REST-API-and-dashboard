@@ -16,8 +16,8 @@ function showPopover(gTag, ratings) {
     const cellData = ratings.find(data => data.cell === cellId);
 
 	if (cellData) {
-		const averageRating = parseFloat(cellData.avgRating); // Parse as a float
-        const numberOfRatings = cellData.ratingCount;
+		const averageRating = parseFloat(cellData.rating); // Parse as a float
+        const numberOfRatings = cellData.ratings_count;
 
         if (!isNaN(averageRating)) { // Check if it's a valid number
             const starRating = generateStarRating(averageRating);

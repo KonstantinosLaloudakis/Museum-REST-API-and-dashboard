@@ -62,11 +62,16 @@ require 'php/connect.php';
 				Γραφηματα
 			</div>
 
+			<li class="nav-item">
+				<a class="nav-link" href="html/visitorsPerHour.html">
+					<i class="fas fa-fw fa-chart-area"></i>
+					<span>Επισκέπτες ανά ώρα</span></a>
+			</li>
 			<!-- Nav Item - Charts -->
 			<li class="nav-item ">
 				<a class="nav-link" href="html/visitsPerHour.html">
 					<i class="fas fa-fw fa-chart-area"></i>
-					<span>Επισκέψεις ανά ώρα</span></a>
+					<span>Επισκέψεις εκθεμάτων ανά ώρα</span></a>
 			</li>
 
 			<!-- Nav Item - Charts -->
@@ -85,7 +90,7 @@ require 'php/connect.php';
 			<li class="nav-item">
 				<a class="nav-link" href="html/visitsPerDay.html">
 					<i class="fas fa-fw fa-chart-area"></i>
-					<span>Επισκέψεις ανά μέρα</span></a>
+					<span>Επισκέψεις εκθεμάτων ανά μέρα</span></a>
 			</li>
 			<!-- Nav Item - Charts -->
 			<li class="nav-item">
@@ -94,11 +99,7 @@ require 'php/connect.php';
 					<span>Χρόνος θέασης ανά έκθεμα</span></a>
 			</li>
 			<!-- Nav Item - Charts -->
-			<li class="nav-item">
-				<a class="nav-link" href="html/appWristbands.html">
-					<i class="fas fa-fw fa-chart-area"></i>
-					<span>Μέσος και μέγιστος χρόνος ανά έκθεμα</span></a>
-			</li>
+
 			<li class="nav-item ">
 				<a class="nav-link" href="html/routeIds.html">
 					<i class="fas fa-fw fa-chart-area"></i>
@@ -159,7 +160,15 @@ require 'php/connect.php';
 
 					<?php
 
-					$sqll = "SELECT  Count(*) as totalVisitors, SUM(CASE WHEN visitorType <> 0 THEN 1 ELSE 0 END) as vipVisitors from visitorids";
+					$sqll = "SELECT
+					SUM(uniqueVisitors) AS totalUniqueVisitors
+				FROM (
+					SELECT
+						DATE(FROM_UNIXTIME(timeIn)) AS visitDate,
+						COUNT(DISTINCT visitorId) AS uniqueVisitors
+					FROM groupeddata
+					GROUP BY visitDate
+				) AS subquery;";
 
 					if (mysqli_query($conn, $sqll)) {
 
@@ -190,33 +199,13 @@ require 'php/connect.php';
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
 													<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-														Μοναδικοί επισκέπτες</div>
+														ΣΥΝΟΛΙΚΟΙ ΕΠΙΣΚΕΠΤΕΣ</div>
 													<div class="h5 mb-0 font-weight-bold text-gray-800">
-														<?php echo $row['totalVisitors']; ?>
+														<?php echo $row['totalUniqueVisitors']; ?>
 													</div>
 												</div>
 												<div class="col-auto">
 													<i class="fas fa-user fa-2x text-gray-300"></i>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<!-- Earnings (Monthly) Card Example -->
-								<div class="col-xl-3 col-md-6 mb-4">
-									<div class="card border-left-success shadow h-100 py-2">
-										<div class="card-body">
-											<div class="row no-gutters align-items-center">
-												<div class="col mr-2">
-													<div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-														Επώνυμοι επισκέπτες</div>
-													<div class="h5 mb-0 font-weight-bold text-gray-800">
-														<?php echo $row['vipVisitors']; ?>
-													</div>
-												</div>
-												<div class="col-auto">
-													<i class="fas fa-star fa-2x text-gray-300"></i>
 												</div>
 											</div>
 										</div>
@@ -236,7 +225,62 @@ require 'php/connect.php';
 
 						<?php
 
-						$sqll = "SELECT  Count(*) as totalRooms from tracksystem";
+						$sqll = "SELECT  Count(*) as vipVisitors from vipvisitorsinfo";
+
+						if (mysqli_query($conn, $sqll)) {
+
+							echo "";
+
+						} else {
+
+							echo "Error: " . $sqll . "<br>" . mysqli_error($conn);
+
+						}
+
+						$result = mysqli_query($conn, $sqll);
+
+						if (mysqli_num_rows($result) > 0) {
+
+							// output data of each row
+						
+							while ($row = mysqli_fetch_assoc($result)) {
+
+								?>
+								<!-- Earnings (Monthly) Card Example -->
+								<div class="col-xl-3 col-md-6 mb-4">
+									<div class="card border-left-success shadow h-100 py-2">
+										<div class="card-body">
+											<div class="row no-gutters align-items-center">
+												<div class="col mr-2">
+													<div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+														ΕΠΩΝΥΜΟΙ ΕΠΙΣΚΕΠΤΕΣ</div>
+													<div class="h5 mb-0 font-weight-bold text-gray-800">
+														<?php echo $row['vipVisitors']; ?>
+													</div>
+												</div>
+												<div class="col-auto">
+													<i class="fas fa-star fa-2x text-gray-300"></i>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<?php
+
+							}
+
+						} else {
+
+							echo '0 results';
+
+						}
+
+						?>
+
+						<?php
+
+						$sqll = "SELECT COUNT(DISTINCT SUBSTRING_INDEX(roomName, '.', 1)) AS totalBuildings FROM cellids";
+
 
 						if (mysqli_query($conn, $sqll)) {
 
@@ -262,12 +306,12 @@ require 'php/connect.php';
 										<div class="card-body">
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
-													<div class="text-xs font-weight-bold text-info text-uppercase mb-1">ΑΙΘΟΥΣΕΣ
+													<div class="text-xs font-weight-bold text-info text-uppercase mb-1">ΚΤΙΡΙΑ
 													</div>
 													<div class="row no-gutters align-items-center">
 														<div class="col-auto">
 															<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-																<?php echo $row['totalRooms']; ?>
+																<?php echo $row['totalBuildings']; ?>
 															</div>
 														</div>
 													</div>
@@ -291,7 +335,7 @@ require 'php/connect.php';
 
 						<?php
 
-						$sqll = "SELECT  MAX(counter) as totalVisits from times";
+						$sqll = "SELECT  COUNT(*) as totalVisits from groupeddata";
 
 						if (mysqli_query($conn, $sqll)) {
 							echo "";
@@ -315,7 +359,7 @@ require 'php/connect.php';
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
 													<div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-														ΣΥΝΟΛΙΚΕΣ ΕΠΙΣΚΕΨΕΙΣ</div>
+														ΣΥΝΟΛΙΚΕΣ ΕΠΙΣΚΕΨΕΙΣ ΕΚΘΕΜΑΤΩΝ</div>
 													<div class="h5 mb-0 font-weight-bold text-gray-800">
 														<?php echo $row['totalVisits']; ?>
 													</div>
@@ -338,7 +382,12 @@ require 'php/connect.php';
 						<div class="row">
 							<?php
 
-							$sqll = "SELECT sensor, totalVisits FROM ( SELECT grouped_data.sensor_id AS sensor, COUNT(*) as totalVisits FROM ( SELECT id, sensor_id FROM `beacon_data_test` WHERE sensor_id != 0 ORDER BY sensor_id ) AS grouped_data GROUP BY grouped_data.sensor_id ORDER BY totalVisits DESC LIMIT 1 ) AS subquery;";
+							$sqll = "SELECT g.cellId, c.roomName AS roomName, COUNT(*) AS totalVisits
+							FROM groupeddata AS g
+							INNER JOIN cellids AS c ON g.cellId = c.id
+							GROUP BY g.cellId
+							ORDER BY totalVisits DESC
+							LIMIT 1";
 
 							if (mysqli_query($conn, $sqll)) {
 								echo "";
@@ -358,8 +407,8 @@ require 'php/connect.php';
 										<div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
 											<div class="card-header">Το πιο δημοφιλές έκθεμα </div>
 											<div class="card-body">
-												<h5 class="card-title">ΕΚΘΕΜΑ
-													<?php echo $row['sensor']; ?> <i class="fas fa-fire"></i>
+												<h5 class="card-title">
+													<?php echo $row['roomName']; ?> <i class="fas fa-fire"></i>
 												</h5>
 												<p class="card-text">ΤΟ ΠΙΟ ΔΗΜΟΦΙΛΕΣ ΕΚΘΕΜΑ ΣΕ ΟΛΟ ΤΟ ΜΟΥΣΕΙΟ ΜΕ
 													<b>
@@ -376,9 +425,16 @@ require 'php/connect.php';
 							}
 							?>
 							<?php
+							// Calculate the date 3 months ago from the current date
+							$threeMonthsAgo = date('Y-m-d', strtotime('-3 months'));
 
-							$sqll = "SELECT COUNT(1) as totalVisits, sensor_id from times where time_in is not null 
-							and time_in >= DATE_FORMAT('2021-11-15' - INTERVAL 1 MONTH,'%Y-%m-01') and time_in <= DATE_FORMAT('2021-11-15','%Y-%m-01') - INTERVAL 1 DAY GROUP BY sensor_id Order by COUNT(1) DESC LIMIT 1;";
+							$sqll = "SELECT g.cellId, c.roomName AS roomName, COUNT(*) AS totalVisits
+							FROM groupeddata AS g
+							INNER JOIN cellids AS c ON g.cellId = c.id
+							WHERE DATE(FROM_UNIXTIME(g.timeIn)) >= '$threeMonthsAgo'
+							GROUP BY g.cellId
+							ORDER BY totalVisits DESC
+							LIMIT 1";
 
 							if (mysqli_query($conn, $sqll)) {
 								echo "";
@@ -398,12 +454,12 @@ require 'php/connect.php';
 									<div class="col-md-4">
 
 										<div class="card text-white bg-success mb-3" style="max-width: 18rem;">
-											<div class="card-header">Δημοφιλέστερο έκθεμα προηγούμενου μήνα</div>
+											<div class="card-header">Δημοφιλέστερο έκθεμα προηγούμενου τριμήνου</div>
 											<div class="card-body">
-												<h5 class="card-title">ΕΚΘΕΜΑ
-													<?php echo $row['sensor_id']; ?> <i class="fas fa-fire"></i>
+												<h5 class="card-title">
+													<?php echo $row['roomName']; ?> <i class="fas fa-fire"></i>
 												</h5>
-												<p class="card-text">ΤΟ ΠΙΟ ΔΗΜΟΦΙΛΕΣ ΕΚΘΕΜΑ ΓΙΑ ΤΟΝ ΠΡΟΗΓΟΥΜΕΝΟ ΜΗΝΑ ΜΕ
+												<p class="card-text">ΤΟ ΠΙΟ ΔΗΜΟΦΙΛΕΣ ΕΚΘΕΜΑ ΓΙΑ ΤΟ ΠΡΟΗΓΟΥΜΕΝΟ ΤΡΙΜΗΝΟ ΜΕ
 													<b>
 														<?php echo $row['totalVisits']; ?> ΕΠΙΣΚΕΨΕΙΣ.
 													</b>
@@ -422,8 +478,17 @@ require 'php/connect.php';
 							}
 							?>
 							<?php
-							$sqll = "SELECT COUNT(1) as totalVisits, sensor_id from times where time_in is not null 
-							and time_in >= DATE_FORMAT('2021-09-20' - INTERVAL DAYOFWEEK('2021-09-20')+6 DAY, '%Y-%m-%d') and time_in < DATE_FORMAT('2021-09-20' - INTERVAL DAYOFWEEK('2021-09-20')-1 DAY,'%Y-%m-%d') GROUP BY sensor_id Order by COUNT(1) DESC LIMIT 1;";
+							// Calculate the date 1 month ago from the current date
+							$oneMonthAgo = date('Y-m-d', strtotime('-1 month'));
+
+							$sqll = "SELECT g.cellId, c.roomName AS roomName, COUNT(*) AS totalVisits
+							FROM groupeddata AS g
+							INNER JOIN cellids AS c ON g.cellId = c.id
+							WHERE DATE(FROM_UNIXTIME(g.timeIn)) >= '$oneMonthAgo'
+							GROUP BY g.cellId
+							ORDER BY totalVisits DESC
+							LIMIT 1";
+
 							if (mysqli_query($conn, $sqll)) {
 								echo "";
 							} else {
@@ -440,12 +505,12 @@ require 'php/connect.php';
 									?>
 									<div class="col-md-4">
 										<div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-											<div class="card-header">Δημοφιλέστερο έκθεμα προηγούμενης εβδομάδας</div>
+											<div class="card-header">Δημοφιλέστερο έκθεμα προηγούμενου μήνα</div>
 											<div class="card-body">
-												<h5 class="card-title">ΕΚΘΕΜΑ
-													<?php echo $row['sensor_id']; ?> <i class="fas fa-fire"></i>
+												<h5 class="card-title">
+													<?php echo $row['roomName']; ?> <i class="fas fa-fire"></i>
 												</h5>
-												<p class="card-text">ΤΟ ΠΙΟ ΔΗΜΟΦΙΛΕΣ ΕΚΘΕΜΑ ΓΙΑ ΤΗΝ ΠΡΟΗΓΟΥΜΕΝΗ ΕΒΔΟΜΑΔΑ ΜΕ
+												<p class="card-text">ΤΟ ΠΙΟ ΔΗΜΟΦΙΛΕΣ ΕΚΘΕΜΑ ΓΙΑ ΤΟΝ ΠΡΟΗΓΟΥΜΕΝΟ ΜΗΝΑ ΜΕ
 													<b>
 														<?php echo $row['totalVisits']; ?> ΕΠΙΣΚΕΨΕΙΣ.
 													</b>
@@ -460,7 +525,18 @@ require 'php/connect.php';
 								}
 
 							} else {
-								echo '0 results';
+								// Display a message when there are no results
+								?>
+								<div class="col-md-4">
+									<div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+										<div class="card-header">Δημοφιλέστερο έκθεμα προηγούμενου μήνα</div>
+										<div class="card-body">
+											<h5 class="card-title">-</h5>
+											<p class="card-text">ΔΕΝ ΥΠΗΡΧΑΝ ΕΠΙΣΚΕΨΕΙΣ ΑΥΤΟ ΤΟ ΔΙΑΣΤΗΜΑ</p>
+										</div>
+									</div>
+								</div>
+								<?php
 							}
 
 
